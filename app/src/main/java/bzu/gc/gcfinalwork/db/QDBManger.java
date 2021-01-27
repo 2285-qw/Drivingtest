@@ -1,0 +1,78 @@
+package bzu.gc.gcfinalwork.db;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bzu.gc.gcfinalwork.entity.Question;
+
+public class QDBManger {
+    private SQLiteDatabase db;
+    private QDatebaseHelper helper;
+    private int wrongnum;
+
+
+    public QDBManger(Context context){
+        helper= new QDatebaseHelper(context);
+        db=helper.getReadableDatabase();
+    }
+
+    //增加错题
+    public void add(Question question,String username) {
+        db.execSQL("INSERT INTO " + QDatebaseHelper.TABLE_NAME
+                + " VALUES (null,?,?,?,?,?,?,?,?,?)", new Object[]{
+                question.getQuestion(),question.getAnswer(),question.getItem1(),question.getItem2(),question.getItem3()
+                ,question.getItem4(),question.getExplains(),question.getUrl(),username
+        });
+    }
+    //获取错题
+    public List<Question> finderror(String username){
+        List<Question> lists=new ArrayList<Question>();
+        Cursor c = db.rawQuery("select * from question where username=?", new String[]{username});
+        while(c.moveToNext()){
+            int id=c.getInt(c.getColumnIndex("id"));
+            String question=c.getString(c.getColumnIndex("question"));
+            int answer=c.getInt(c.getColumnIndex("answer"));
+            String item1=c.getString(c.getColumnIndex("item1"));
+            String item2=c.getString(c.getColumnIndex("item2"));
+            String item3=c.getString(c.getColumnIndex("item3"));
+            String item4=c.getString(c.getColumnIndex("item4"));
+            String explains=c.getString(c.getColumnIndex("explains"));
+            String url=c.getString(c.getColumnIndex("url"));
+           Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username);
+           lists.add(question1);
+        }
+        c.close();
+        wrongnum=lists.size();
+        return lists;
+    }
+    //删除错题
+    public void deleterror(int id){
+        db.delete(QDatebaseHelper.TABLE_NAME,"id=?",new String[]{String.valueOf(id)});
+    }
+    //获取错题的总行数
+    public int getWrongnum(String username){
+         List<Question> lists=new ArrayList<Question>();
+        Cursor c = db.rawQuery("select * from question where username=?", new String[]{username});
+        while(c.moveToNext()){
+            int id=c.getInt(c.getColumnIndex("id"));
+            String question=c.getString(c.getColumnIndex("question"));
+            int answer=c.getInt(c.getColumnIndex("answer"));
+            String item1=c.getString(c.getColumnIndex("item1"));
+            String item2=c.getString(c.getColumnIndex("item2"));
+            String item3=c.getString(c.getColumnIndex("item3"));
+            String item4=c.getString(c.getColumnIndex("item4"));
+            String explains=c.getString(c.getColumnIndex("explains"));
+            String url=c.getString(c.getColumnIndex("url"));
+            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username);
+            lists.add(question1);
+        }
+        c.close();
+        wrongnum=lists.size();
+        return  wrongnum;
+    }
+
+}
