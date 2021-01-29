@@ -46,7 +46,7 @@
             android:id="@+id/home_allnum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
+            android:layout_weight="4"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:text="20"

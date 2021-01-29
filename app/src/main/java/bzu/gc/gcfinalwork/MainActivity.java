@@ -2,22 +2,14 @@
 package bzu.gc.gcfinalwork;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,14 +27,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import bzu.gc.gcfinalwork.Adapter.ShopAdapter;
 import bzu.gc.gcfinalwork.db.DBManger;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 import bzu.gc.gcfinalwork.entity.ShopInfo;
-import bzu.gc.gcfinalwork.entity.user;
-import bzu.gc.gcfinalwork.tools.JsonParse;
 import bzu.gc.gcfinalwork.tools.shuaJsonParse;
+
+import static bzu.gc.gcfinalwork.R.mipmap.answer;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<View> pageview;
@@ -83,31 +74,26 @@ public class MainActivity extends AppCompatActivity {
     private int answer;
     private ImageView right;
     private ImageView error;
-    private TextView timelimit;
     Timer timer=new Timer();
 
-    private View viewshop;
-    private ListView listView;
-    private LinearLayout loading;
+
     private List<ShopInfo> lists;
 
     private View viewmine;
-    private TextView mine_username;
     final Timer timer1=new Timer();
+
+    //底部主页图标
+    private ImageView homei;
+    //底部答题图标
+    private ImageView answeri;
+    //底部我的图标
+    private ImageView myi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //获得登陆页面账号密码登陆信息
-        Intent intentforlogin = getIntent();
-        username = intentforlogin.getStringExtra("username");
-        password=intentforlogin.getStringExtra("password");
-        allnum = intentforlogin.getIntExtra("allnum", 0);
-        aimnum = intentforlogin.getIntExtra("aimnum", 0);
-        errornum = intentforlogin.getIntExtra("errornum", 0);
-        islogin = intentforlogin.getIntExtra("islogin", 0);
         //去除标题栏
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -118,27 +104,23 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         viewhome = inflater.inflate(R.layout.home_layout, null);
         viewshua = inflater.inflate(R.layout.shua_layout, null);
-        viewshop = inflater.inflate(R.layout.shop_layout, null);
         viewmine = inflater.inflate(R.layout.mine_layout, null);
         pageview = new ArrayList<View>();
 
         //添加想要跳转的页面
         pageview.add(viewhome);
         pageview.add(viewshua);
-        pageview.add(viewshop);
         pageview.add(viewmine);
         //初始化
         init();
         //查看是否登陆,未登录则进入登入页面
-        islogin();
-        initget();
+
         getresource();
         PagerAdapter mpagerAdapter = new PagerAdapter() {
             @Override
             //获取当前页面数量
             public int getCount() {
                 return pageview.size();
-
             }
 
             //判断是否由对象生成页面
@@ -162,10 +144,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(mpagerAdapter);
         //设置viewPager的初始化界面为第一个界面并初始化
         viewPager.setCurrentItem(0);
-        homeout.setBackgroundColor(Color.parseColor("#EEEEEE"));
-        shuaout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        shopout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        mineout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+        homei.setImageResource(R.mipmap.homeclick);
+        homeout.setTextColor(Color.parseColor("#55CAC2"));
+        shuaout.setTextColor(Color.parseColor("#999999"));
+        mineout.setTextColor(Color.parseColor("#999999"));
+
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -176,28 +159,28 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int i) {
                 switch (i){
                     case 0:
-                        homeout.setBackgroundColor(Color.parseColor("#EEEEEE"));
-                        shuaout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shopout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        mineout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        homei.setImageResource(R.mipmap.homeclick);
+                        answeri.setImageResource(R.mipmap.answer);
+                        myi.setImageResource(R.mipmap.my);
+                        homeout.setTextColor(Color.parseColor("#55CAC2"));
+                        shuaout.setTextColor(Color.parseColor("#999999"));
+                        mineout.setTextColor(Color.parseColor("#999999"));
                         break;
                     case 1:
-                        homeout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shuaout.setBackgroundColor(Color.parseColor("#EEEEEE"));
-                        shopout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        mineout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+                        homei.setImageResource(R.mipmap.home);
+                        answeri.setImageResource(R.mipmap.answerclick);
+                        myi.setImageResource(R.mipmap.my);
+                        homeout.setTextColor(Color.parseColor("#999999"));
+                        shuaout.setTextColor(Color.parseColor("#55CAC2"));
+                        mineout.setTextColor(Color.parseColor("#999999"));
                         break;
                     case 2:
-                        homeout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shuaout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shopout.setBackgroundColor(Color.parseColor("#EEEEEE"));
-                        mineout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        break;
-                    case 3:
-                        homeout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shuaout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        shopout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-                        mineout.setBackgroundColor(Color.parseColor("#EEEEEE"));
+                        homei.setImageResource(R.mipmap.home);
+                        answeri.setImageResource(R.mipmap.answer);
+                        myi.setImageResource(R.mipmap.myclick);
+                        homeout.setTextColor(Color.parseColor("#999999"));
+                        shuaout.setTextColor(Color.parseColor("#999999"));
+                        mineout.setTextColor(Color.parseColor("#55CAC2"));
                         break;
 
                 }
@@ -208,64 +191,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //shoplist点击跳转
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShopInfo shopInfo=lists.get(position);
-                String url=shopInfo.getSrc();
-                Intent intent=new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                intent.setData(Uri.parse(url));
-                startActivity(intent);
-            }
-        });
+
         select.setOnCheckedChangeListener(new myselect());
-        timer.schedule(timerTask,1000,1000);
-    }
-    //倒计时
-    TimerTask timerTask=new TimerTask() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    time--;
-                    timelimit.setText(String.valueOf(time));
-                    if(time<0){
-                        timer.cancel();
-                        qdbManger.add(Qlist.get(num),username);
-                        error.setVisibility(View.VISIBLE);
-                        right.setVisibility(View.INVISIBLE);
-                        explain.setVisibility(View.VISIBLE);
-                        timelimit.setVisibility(View.VISIBLE);
-
-                    }
-                }
-            });
-        }
-    };
-
-    //点击注销用户
-    public void quit(View view) {
-        Intent tologin = new Intent(MainActivity.this, loginpage.class);
-        startActivity(tologin);
     }
 
-    //判断是否已经登陆
-    public void islogin() {
-        if (islogin == 1) {
-            mine_username.setText(username);
-            home_allnum.setText(String.valueOf(allnum));
-            home_aimnum.setText(String.valueOf(aimnum));
-            home_errornum.setText(String.valueOf(errornum));
-
-        }
-        if (islogin == 0) {
-            Intent intenttologin = new Intent(this, loginpage.class);
-            startActivity(intenttologin);
-        }
-    }
 
     //底部按钮点击跳转页面事件
     //初始化页面
@@ -276,17 +205,16 @@ public class MainActivity extends AppCompatActivity {
 
         homeout=findViewById(R.id.homeout);
         shuaout=findViewById(R.id.shuaout);
-        shopout=findViewById(R.id.shopout);
         mineout=findViewById(R.id.mineout);
+        homei=findViewById(R.id.homeI);
+        answeri=findViewById(R.id.answeri);
+        myi=findViewById(R.id.myi);
+
 
         home_allnum = viewhome.findViewById(R.id.home_allnum);
         home_aimnum = viewhome.findViewById(R.id.home_aimnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
 
-        mine_username = viewmine.findViewById(R.id.mine_username);
-
-        listView = viewshop.findViewById(R.id.lvNews);
-        loading = viewshop.findViewById(R.id.loading);
 
         tittle=viewshua.findViewById(R.id.tittle);
         item1=viewshua.findViewById(R.id.item1);
@@ -298,32 +226,24 @@ public class MainActivity extends AppCompatActivity {
         select=viewshua.findViewById(R.id.select);
         right=viewshua.findViewById(R.id.right);
         error=viewshua.findViewById(R.id.error);
-        timelimit=viewshua.findViewById(R.id.timelimit);
     }
 
     //点击跳转主页
     public void click1(View v) {
         viewPager.setCurrentItem(0);
-        dbManger.updatewrong(qdbManger.getWrongnum(username),username);
+        /*dbManger.updatewrong(qdbManger.getWrongnum(username),username);
         user User = dbManger.selectuser(username);
         home_allnum.setText(User.allnum.toString());
         home_aimnum.setText(User.aimnum.toString());
         home_errornum.setText(User.errornum.toString());
-
-
+*/
     }
 
     //点击跳转刷题页面
     public void click2(View v) {
         viewPager.setCurrentItem(1);
-
     }
 
-    //点击跳转商城页面
-    public void click3(View v) {
-        viewPager.setCurrentItem(2);
-
-    }
 
     //点击跳转我的页面
     public void click4(View v) {
@@ -331,34 +251,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //从服务器中获取商店页面的商品信息
-    public void initget() {
-        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-        asyncHttpClient.get(getString(R.string.serverurl), new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                try {
-                    String jsons = new String(bytes, "utf-8");
-                    System.out.println(jsons);
-                    lists = JsonParse.getNewsInfo(jsons);
-                    if (lists != null) {
-                        loading.setVisibility(View.INVISIBLE);
-                        ShopAdapter shopAdapter = new ShopAdapter(MainActivity.this, R.layout.shop_items, lists);
-                        listView.setAdapter(shopAdapter);
-                    } else {
-                        Toast.makeText(MainActivity.this, "获取信息失败", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                Toast.makeText(MainActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
     //聚合数据获取
     public void getresource(){
         final int qth=0;
@@ -395,17 +287,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void tochangepwd(View view){
-        Intent intenttochange=new Intent(MainActivity.this,ChangepwdActivity.class);
-        intenttochange.putExtra("username",username);
-        intenttochange.putExtra("password",password);
-        System.out.println(password);
-        startActivity(intenttochange);
-    }
 
     public void newtquestion(View view){
         timer.cancel();
-        timelimit.setVisibility(View.VISIBLE);
         explain.setVisibility(View.INVISIBLE);
         time=21;
         final Timer timer1=new Timer();
@@ -416,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         time--;
-                        timelimit.setText(String.valueOf(time));
+
                         if(time<0 || time==30){
                             timer1.cancel();
                             qdbManger.add(Qlist.get(num),username);
@@ -458,6 +342,7 @@ public class MainActivity extends AppCompatActivity {
             switch (checkedId){
                 case R.id.item1:
                     selanswer=1;
+                    item1.setBackgroundDrawable(R.mipmap.answer);
                     break;
                 case R.id.item2:
                     selanswer=2;
@@ -475,16 +360,16 @@ public class MainActivity extends AppCompatActivity {
                 error.setVisibility(View.INVISIBLE);
                 right.setVisibility(View.VISIBLE);
                 explain.setVisibility(View.VISIBLE);
-                timelimit.setVisibility(View.INVISIBLE);
+
             }else
             {
                 timer1.cancel();
-                dbManger.updatewrong(qdbManger.getWrongnum(username),username);
+                //====================================================================================
+                dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
                 qdbManger.add(Qlist.get(num),username);
                 error.setVisibility(View.VISIBLE);
                 right.setVisibility(View.INVISIBLE);
                 explain.setVisibility(View.VISIBLE);
-                timelimit.setVisibility(View.INVISIBLE);
             }
         }
     }

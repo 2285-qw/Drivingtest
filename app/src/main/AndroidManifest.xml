@@ -16,11 +16,6 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".wrnglists"></activity>
-        <activity android:name=".ChangepwdActivity" >
-
-        </activity>
-        <activity android:name=".registpage" />
-        <activity android:name=".loginpage" ></activity>
         <activity android:name=".MainActivity" >
 
 

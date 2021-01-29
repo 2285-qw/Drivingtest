@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
-
 import bzu.gc.gcfinalwork.entity.user;
 
 public class DBManger {
@@ -64,13 +62,12 @@ public class DBManger {
     //获取allnum的数值
     public int getallnum(String username){
         int allnum=0;
-        Cursor c = db.rawQuery("select allnum from user where username=?", new String[]{username});
+        Cursor c = db.rawQuery("select allnum from user where username=?", new String[]{"111"});
         if (c.moveToFirst()) {
             allnum=(c.getInt(c.getColumnIndex("allnum")));
         }
         return allnum;
     }
-
 
 
     public void closeDB() {

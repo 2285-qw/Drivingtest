@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEEEE"
-    >
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <LinearLayout
+        android:id="@+id/lin1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/maincolor"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
-            android:text="刷题"
-            android:textSize="20dp"
+            android:background="@color/maincolor"
             android:gravity="center"
-            android:background="#FFFFFFFF"
-            />
+            android:text="答题"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
-        android:background="#FFFFFFFF"
+        android:id="@+id/lin2"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="#FFFFFFFF"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/lin1">
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单选"
+            android:textColor="@color/white"
+            android:background="@drawable/beijin1"
+            android:textSize="15dp" />
         <TextView
             android:id="@+id/tittle"
             android:layout_width="match_parent"
@@ -30,112 +50,119 @@
             android:layout_weight="1"
             android:text="题目名称"
             android:textColor="#000000"
-            android:textSize="15dp"/>
-        <TextView
             android:textSize="15dp"
-            android:textColor="#000"
-            android:id="@+id/timelimit"
-            android:layout_weight="6 "
+            android:paddingBottom="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/lin2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        >
+
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/questionimg"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <RadioGroup
+            android:id="@+id/select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="倒计时"/>
+            android:background="#FFFFFF">
+
+            <RadioButton
+                android:id="@+id/item1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="选项一" />
+
+            <RadioButton
+                android:id="@+id/item2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="选项二" />
+
+            <RadioButton
+                android:id="@+id/item3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="选项三" />
+
+            <RadioButton
+                android:id="@+id/item4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="选项四" />
+        </RadioGroup>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="#FFFFFF"
+            android:text="解释："
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/explain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#FFFFFF"
+            android:maxLength="150"
+            android:textSize="15dp"
+            android:visibility="invisible" />
+
+
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#EEEEEE"
-            android:padding="10dp">
-            <RadioGroup
-                android:id="@+id/select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                >
-                <RadioButton
-                    android:id="@+id/item1"
-                    android:text="选项一"
-                    android:layout_marginTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-                <RadioButton
-                    android:id="@+id/item2"
-                    android:text="选项二"
-                    android:layout_marginTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-                <RadioButton
-                    android:id="@+id/item3"
-                    android:text="选项三"
-                    android:layout_marginTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-                <RadioButton
-                    android:id="@+id/item4"
-                    android:text="选项四"
-                    android:layout_marginTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </RadioGroup>
-            <com.loopj.android.image.SmartImageView
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/questionimg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <TextView
-                android:layout_marginTop="25dp"
-                android:layout_width="match_parent"
-                android:text="解释："
-                android:textSize="20dp"
-                android:textColor="#000"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"/>
-            <TextView
-                android:layout_marginTop="5dp"
-                android:visibility="invisible"
-                android:id="@+id/explain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:maxLength="150"
-                android:background="#FFFFFF"/>
-            <Button
-                android:layout_marginTop="30dp"
-                android:text="下一题"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
-                android:onClick="newtquestion"
-                android:textSize="20dp"
-                android:background="#CC0033"/>
-        </LinearLayout>
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="@id/lin2">
 
         <ImageView
-            android:visibility="invisible"
             android:id="@+id/right"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginBottom="100dp"
             android:src="@drawable/right"
-            />
+            android:visibility="invisible" />
+
         <ImageView
-            android:visibility="invisible"
             android:id="@+id/error"
-            android:src="@drawable/wrong"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginBottom="100dp"
-            />
+            android:src="@drawable/wrong"
+            android:visibility="invisible" />
 
 
     </FrameLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/maincolor"
+        android:onClick="newtquestion"
+        android:text="下一题"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#ffffffff"
+        android:textSize="20dp" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

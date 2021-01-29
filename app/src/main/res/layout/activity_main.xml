@@ -4,59 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ViewPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"></android.support.v4.view.ViewPager>
+
     <LinearLayout
         android:id="@+id/allout"
-        android:layout_weight="12"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="12"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/homeout"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:onClick="click1"
-            android:drawablePadding="-20dp"
-            android:drawableLeft="@drawable/home"
-            android:text="主页"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/homeI"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@mipmap/home"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/homeout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/six9"
+                android:gravity="center"
+
+                android:text="首页"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/shuaout"
             android:onClick="click2"
-            android:drawableLeft="@drawable/pen"
-            android:drawablePadding="-20dp"
-            android:text="刷题"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/answeri"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@mipmap/answer"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/shuaout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/six9"
+                android:layout_weight="1"
+                android:gravity="center"
+
+                android:text="答题"
+               />
+        </LinearLayout>
+
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/shopout"
-            android:onClick="click3"
-            android:drawableLeft="@drawable/shop"
-            android:drawablePadding="-20dp"
-            android:text="商城"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/mineout"
             android:onClick="click4"
-            android:drawableLeft="@drawable/man"
-            android:drawablePadding="-20dp"
-            android:text="我的"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/myi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@mipmap/my"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/mineout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/six9"
+                android:layout_weight="1"
+                android:gravity="center"
+
+                android:text="答题"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

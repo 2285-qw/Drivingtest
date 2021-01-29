@@ -7,5 +7,4 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="serverurl"> http://10.63.4.58:8080/android/source.json</string>
 </resources>

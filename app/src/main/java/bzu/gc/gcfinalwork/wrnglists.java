@@ -1,15 +1,14 @@
 package bzu.gc.gcfinalwork;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.List;
-import java.util.Queue;
 
 import bzu.gc.gcfinalwork.Adapter.QuestionAdapter;
 import bzu.gc.gcfinalwork.db.DBManger;
