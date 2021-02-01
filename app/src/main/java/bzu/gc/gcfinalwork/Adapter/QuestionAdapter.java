@@ -1,10 +1,10 @@
 package bzu.gc.gcfinalwork.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
@@ -24,10 +24,13 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView != null)
-            return convertView;
         Question question=getItem(position);
-        View view = View.inflate(getContext(), resource, null);
+        View view;
+        if (convertView != null){
+            view=convertView;
+        }else {
+            view= View.inflate(getContext(), resource, null);
+        }
         TextView w_tittle=view.findViewById(R.id.wrong_tittle);
         TextView w_answer=view.findViewById(R.id.wrong_answer);
         TextView item1=view.findViewById(R.id.wrong_item1);
@@ -44,6 +47,8 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         item4.setText(question.getItem4());
         questionimg.setImageUrl(question.getUrl());
         explains.setText(question.getExplains());
+        Log.d("position",position+"");
+        Log.d("id",question.getId()+"");
         return view;
     }
 }

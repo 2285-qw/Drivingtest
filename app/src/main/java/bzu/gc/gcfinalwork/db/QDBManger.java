@@ -3,6 +3,7 @@ package bzu.gc.gcfinalwork.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,26 @@ public class QDBManger {
         db=helper.getReadableDatabase();
     }
 
+    //判断错题是否存在
+    public Boolean idfrist(int id){
+        Cursor c = db.rawQuery("select * from question where id='" + id + "'",null);
+        Log.d("ccc",c+"");
+        if (c.moveToFirst()){
+            c.close();
+            return true;
+        }else {
+            c.close();
+            return false;
+        }
+
+
+    }
+
+
     //增加错题
     public void add(Question question,String username) {
         db.execSQL("INSERT INTO " + QDatebaseHelper.TABLE_NAME
-                + " VALUES (null,?,?,?,?,?,?,?,?,?)", new Object[]{
+                + " VALUES (?,?,?,?,?,?,?,?,?,?)", new Object[]{question.getId(),
                 question.getQuestion(),question.getAnswer(),question.getItem1(),question.getItem2(),question.getItem3()
                 ,question.getItem4(),question.getExplains(),question.getUrl(),username
         });
@@ -31,7 +48,8 @@ public class QDBManger {
     //获取错题
     public List<Question> finderror(String username){
         List<Question> lists=new ArrayList<Question>();
-        Cursor c = db.rawQuery("select * from question where username=?", new String[]{username});
+        Cursor c = db.rawQuery("select * from question where username=?", new String[]{"111"});
+        Log.d("ccc",c+"");
         while(c.moveToNext()){
             int id=c.getInt(c.getColumnIndex("id"));
             String question=c.getString(c.getColumnIndex("question"));

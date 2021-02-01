@@ -49,7 +49,7 @@
             android:layout_weight="4"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:text="20"
+            android:text="0"
             />
     </LinearLayout>
 
@@ -61,6 +61,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:gravity="center"
+        android:onClick="tomywronglist"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -71,7 +72,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:onClick="tomywronglist"
+
             android:textSize="20sp"
             android:textColor="@color/white"
             android:text="错题本：" />
@@ -83,7 +84,7 @@
             android:layout_weight="4"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:text="20"
+            android:text="0"
            />
         <ImageView
             android:layout_width="wrap_content"
@@ -98,6 +99,7 @@
         android:orientation="horizontal"
         android:background="@mipmap/back3"
         android:gravity="center"
+        android:onClick="tomywronglist"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:padding="10dp">
@@ -111,7 +113,7 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:textColor="@color/white"
-            android:onClick="tomywronglist"
+
             android:text="我的收藏：" />
 
         <TextView
@@ -119,39 +121,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:text="20"
+            android:text="0"
             android:textSize="20sp"
             android:textColor="@color/white" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/arrow_whiet"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="#FFFFFFFF"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:visibility="invisible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:text="目标刷题量：" />
-
-        <TextView
-            android:id="@+id/home_aimnum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:text="15/20"
-            android:textSize="15dp" />
     </LinearLayout>
 
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,15 +26,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import bzu.gc.gcfinalwork.db.DBManger;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 import bzu.gc.gcfinalwork.entity.ShopInfo;
+import bzu.gc.gcfinalwork.entity.user;
 import bzu.gc.gcfinalwork.tools.shuaJsonParse;
-
-import static bzu.gc.gcfinalwork.R.mipmap.answer;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<View> pageview;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView homeout;
     private TextView shuaout;
-    private TextView shopout;
     private TextView mineout;
 
     private int islogin = 0;
@@ -51,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private QDBManger qdbManger;
     private String username;
     private String password;
-    private int aimnum;
+
     private int allnum;
-    private int errornum;
+
 
     private View viewhome;
     private TextView home_allnum;
@@ -196,6 +194,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        home_errornum.setText(qdbManger.getWrongnum("111")+"");
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i==0){
+                    home_errornum.setText(qdbManger.getWrongnum("111")+"");
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
+    }
+
     //底部按钮点击跳转页面事件
     //初始化页面
     public void init() {
@@ -212,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         home_allnum = viewhome.findViewById(R.id.home_allnum);
-        home_aimnum = viewhome.findViewById(R.id.home_aimnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
 
 
@@ -231,12 +254,11 @@ public class MainActivity extends AppCompatActivity {
     //点击跳转主页
     public void click1(View v) {
         viewPager.setCurrentItem(0);
-        /*dbManger.updatewrong(qdbManger.getWrongnum(username),username);
-        user User = dbManger.selectuser(username);
-        home_allnum.setText(User.allnum.toString());
-        home_aimnum.setText(User.aimnum.toString());
-        home_errornum.setText(User.errornum.toString());
-*/
+        dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
+        user User = dbManger.selectuser("111");
+        System.out.println(User.allnum+"------");
+        home_allnum.setText(User.allnum+"1");
+
     }
 
     //点击跳转刷题页面
@@ -262,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
                     String json=new String(bytes,"utf-8");
                     System.out.println(json);
                     Qlist= shuaJsonParse.getquestioninfo(json);
+                    System.out.println(Qlist.size());
                     if (Qlist!=null){
                         Question question= Qlist.get(qth);
                         tittle.setText(question.getQuestion());
@@ -291,28 +314,6 @@ public class MainActivity extends AppCompatActivity {
     public void newtquestion(View view){
         timer.cancel();
         explain.setVisibility(View.INVISIBLE);
-        time=21;
-        final Timer timer1=new Timer();
-        TimerTask timerTask1=new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        time--;
-
-                        if(time<0 || time==30){
-                            timer1.cancel();
-                            qdbManger.add(Qlist.get(num),username);
-                            error.setVisibility(View.VISIBLE);
-                            right.setVisibility(View.INVISIBLE);
-                            explain.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-            }
-        };
-        timer1.schedule(timerTask1,2000,2000);
 
         allnum=dbManger.getallnum(username);
         dbManger.upallnum(allnum,username);
@@ -332,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
         item4.setText(question.getItem4());
         questionimg.setImageUrl(question.getUrl());
         explain.setText(question.getExplains());
+        Log.d("xxx","item1:"+question.getItem1()+"item2:"+question.getItem2()+"item3:"+question.getItem3()+"item4:"+question.getItem4());
     }
     public class myselect implements RadioGroup.OnCheckedChangeListener{
         int selanswer;
@@ -342,7 +344,6 @@ public class MainActivity extends AppCompatActivity {
             switch (checkedId){
                 case R.id.item1:
                     selanswer=1;
-                    item1.setBackgroundDrawable(R.mipmap.answer);
                     break;
                 case R.id.item2:
                     selanswer=2;
@@ -356,17 +357,22 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println(selanswer);
             if (selanswer==answer){
-                timer1.cancel();
+
                 error.setVisibility(View.INVISIBLE);
                 right.setVisibility(View.VISIBLE);
                 explain.setVisibility(View.VISIBLE);
+                if (!qdbManger.idfrist((Qlist.get(num).getId()))){
+                    qdbManger.add(Qlist.get(num),"");
+                }
 
             }else
             {
-                timer1.cancel();
                 //====================================================================================
                 dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
-                qdbManger.add(Qlist.get(num),username);
+                if (!qdbManger.idfrist((Qlist.get(num).getId()))){
+                qdbManger.add(Qlist.get(num),"111");
+            }
+
                 error.setVisibility(View.VISIBLE);
                 right.setVisibility(View.INVISIBLE);
                 explain.setVisibility(View.VISIBLE);

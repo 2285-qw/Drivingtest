@@ -3,6 +3,7 @@ package bzu.gc.gcfinalwork;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -42,6 +43,10 @@ public class wrnglists extends AppCompatActivity {
         list=qdbManger.finderror(usernmae);
         if (list!=null){
             loading.setVisibility(View.INVISIBLE);
+            Log.d("list",list.size()+"");
+            for (int i=0;i<list.size();i++){
+                Log.d("list",list.get(i).getId()+"");
+            }
             QuestionAdapter questionAdapter=new QuestionAdapter(this,R.layout.wrong_item,list);
             w_LV.setAdapter(questionAdapter);
         }
