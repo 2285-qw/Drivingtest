@@ -25,14 +25,14 @@ import org.apache.http.Header;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import bzu.gc.gcfinalwork.db.DBManger;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 import bzu.gc.gcfinalwork.entity.ShopInfo;
-import bzu.gc.gcfinalwork.entity.user;
 import bzu.gc.gcfinalwork.tools.shuaJsonParse;
+import bzu.gc.gcfinalwork.ui.collectActivity;
+import bzu.gc.gcfinalwork.ui.wrongbook;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<View> pageview;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView home_allnum;
     private TextView home_aimnum;
     private TextView home_errornum;
+    private TextView home_errornum1;
 
     private View viewshua;
     private List<Question> Qlist;
@@ -72,13 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private int answer;
     private ImageView right;
     private ImageView error;
-    Timer timer=new Timer();
-
 
     private List<ShopInfo> lists;
 
     private View viewmine;
-    final Timer timer1=new Timer();
 
     //底部主页图标
     private ImageView homei;
@@ -111,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         pageview.add(viewmine);
         //初始化
         init();
-        //查看是否登陆,未登录则进入登入页面
 
         getresource();
         PagerAdapter mpagerAdapter = new PagerAdapter() {
@@ -155,6 +152,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
+                if (i==0){
+
+                }
+
                 switch (i){
                     case 0:
                         homei.setImageResource(R.mipmap.homeclick);
@@ -163,6 +164,15 @@ public class MainActivity extends AppCompatActivity {
                         homeout.setTextColor(Color.parseColor("#55CAC2"));
                         shuaout.setTextColor(Color.parseColor("#999999"));
                         mineout.setTextColor(Color.parseColor("#999999"));
+
+
+                        //设置错题数
+                        home_errornum.setText(qdbManger.getWrongnum("111")+"");
+                        //设置刷题总量
+                        home_allnum.setText(qdbManger.getWrongnum()+"");
+                        //设置收藏题数
+                        home_errornum1.setText(qdbManger.getCollect().size()+"");
+
                         break;
                     case 1:
                         homei.setImageResource(R.mipmap.home);
@@ -197,26 +207,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //设置错题数
         home_errornum.setText(qdbManger.getWrongnum("111")+"");
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
+        //设置刷题总量
+        home_allnum.setText(qdbManger.getWrongnum()+"");
+        //获取收藏题数
+        List list=new ArrayList();
+        list=qdbManger.getCollect();
+        Log.d("list",list.size()+"++++"+list);
 
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (i==0){
-                    home_errornum.setText(qdbManger.getWrongnum("111")+"");
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+        //设置收藏题数
+        home_errornum1.setText(qdbManger.getCollect().size()+"");
 
     }
 
@@ -237,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
         home_allnum = viewhome.findViewById(R.id.home_allnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
+        home_errornum1 = viewhome.findViewById(R.id.home_errornum1);
 
 
         tittle=viewshua.findViewById(R.id.tittle);
@@ -251,13 +253,13 @@ public class MainActivity extends AppCompatActivity {
         error=viewshua.findViewById(R.id.error);
     }
 
-    //点击跳转主页
+    //点击跳转首页
     public void click1(View v) {
         viewPager.setCurrentItem(0);
         dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
-        user User = dbManger.selectuser("111");
-        System.out.println(User.allnum+"------");
-        home_allnum.setText(User.allnum+"1");
+
+        //设置刷题总量
+        home_allnum.setText(qdbManger.getWrongnum()+"");  //设置刷题总量
 
     }
 
@@ -284,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                     String json=new String(bytes,"utf-8");
                     System.out.println(json);
                     Qlist= shuaJsonParse.getquestioninfo(json);
-                    System.out.println(Qlist.size());
+                    //System.out.println(Qlist.size());
                     if (Qlist!=null){
                         Question question= Qlist.get(qth);
                         tittle.setText(question.getQuestion());
@@ -312,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void newtquestion(View view){
-        timer.cancel();
         explain.setVisibility(View.INVISIBLE);
 
         allnum=dbManger.getallnum(username);
@@ -381,8 +382,14 @@ public class MainActivity extends AppCompatActivity {
     }
     //跳转至我的错题本
     public void tomywronglist(View view){
-        Intent intent=new Intent(MainActivity.this,wrnglists.class);
+        Intent intent=new Intent(MainActivity.this, wrongbook.class);
         intent.putExtra("username",username);
+        startActivity(intent);
+    }
+
+    //跳转至我的收藏
+    public void skipCollect(View view){
+        Intent intent=new Intent(MainActivity.this, collectActivity.class);
         startActivity(intent);
     }
 }

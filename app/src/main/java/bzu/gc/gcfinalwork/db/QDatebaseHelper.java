@@ -30,7 +30,8 @@ public class QDatebaseHelper extends SQLiteOpenHelper {
         buffer.append("[item4] TEXT,");
         buffer.append("[explains] TEXT,");
         buffer.append("[url] TEXT,");
-        buffer.append("[username] TEXT)");
+        buffer.append("[username] TEXT,");
+        buffer.append("[collect] TEXT)");
         db.execSQL(buffer.toString());
     }
 
@@ -40,4 +41,5 @@ public class QDatebaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+
 }

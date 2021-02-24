@@ -39,6 +39,7 @@ public class wrnglists extends AppCompatActivity {
 
         w_LV=findViewById(R.id.wronglist);
         loading=findViewById(R.id.wrong_loading);
+
         qdbManger=new QDBManger(this);
         list=qdbManger.finderror(usernmae);
         if (list!=null){
@@ -64,7 +65,6 @@ public class wrnglists extends AppCompatActivity {
 
     }
     public void closeWl(View view){
-        dbManger.updatewrong(qdbManger.getWrongnum(usernmae),usernmae);
         finish();
     }
 }
