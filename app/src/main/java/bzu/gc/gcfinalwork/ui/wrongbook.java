@@ -1,10 +1,12 @@
 package bzu.gc.gcfinalwork.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -44,6 +46,11 @@ public class wrongbook extends AppCompatActivity {
     private RadioButton item4;
     private TextView explain;
     private SmartImageView questionimg;
+    //收藏图标
+    private ImageView collect;
+    //收藏文字
+    private TextView t_collect;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +82,8 @@ public class wrongbook extends AppCompatActivity {
         item4 = findViewById(R.id.item4);
         explain = findViewById(R.id.explain);
         questionimg = findViewById(R.id.questionimg);
+        collect=findViewById(R.id.collect);
+        t_collect=findViewById(R.id.t_collect);
     }
 
     private void setdata(int qth) {
@@ -86,8 +95,32 @@ public class wrongbook extends AppCompatActivity {
             item3.setText(question.getItem3());
             item4.setText(question.getItem4());
             answer = question.getAnswer();
-            questionimg.setImageUrl(question.getUrl());
+
+            //设置图片加载没有图片时隐藏
+            switch (question.getUrl()){
+                case "":
+                    questionimg.setVisibility(View.GONE);
+                    break;
+                default:
+                    questionimg.setVisibility(View.VISIBLE);
+                    break;
+            }
+            questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+
             explain.setText(question.getExplains());
+
+            Log.d("getcollect",question.getCollect().trim());
+            switch (question.getCollect()){
+                case "0":
+                    collect.setImageResource(R.mipmap.icon);
+                    t_collect.setTextColor(Color.parseColor("#fa6e52"));
+                    break;
+                case "1":
+                    collect.setImageResource(R.mipmap.icon1);
+                    t_collect.setTextColor(Color.parseColor("#000000"));
+                    break;
+
+            }
         }
     }
 
@@ -95,7 +128,7 @@ public class wrongbook extends AppCompatActivity {
     public void newtquestion(View view) {
         int i = qdbManger.getWrongnum("111");
         num++;
-        if (num == i) {
+        if (num >= i) {
             num = 0;
         }
         setdata(num);
@@ -111,7 +144,23 @@ public class wrongbook extends AppCompatActivity {
         question.getId();
         Log.d("id",question.getId()+"");
         qdbManger.addCollect(question.getId());
+        collect.setImageResource(R.mipmap.icon);
+        t_collect.setTextColor(Color.parseColor("#fa6e52"));
 
+    }
+
+    //点击删除错题
+    public void deleteWrong(View view){
+        question.getId();
+        qdbManger.deleteWrong(question.getId());
+
+        //更新list集合数据
+        list = qdbManger.finderror(usernmae);
+        int i = qdbManger.getWrongnum("111");
+        if (num >= i) {
+            num = 0;
+        }
+        setdata(num);
     }
 
 }

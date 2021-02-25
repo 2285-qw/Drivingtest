@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     String json=new String(bytes,"utf-8");
+                    Log.d("json",json);
                     System.out.println(json);
                     Qlist= shuaJsonParse.getquestioninfo(json);
                     //System.out.println(Qlist.size());
@@ -295,7 +296,17 @@ public class MainActivity extends AppCompatActivity {
                         item3.setText(question.getItem3());
                         item4.setText(question.getItem4());
                         answer=question.getAnswer();
-                        questionimg.setImageUrl(question.getUrl());
+                        //设置图片加载没有图片时隐藏
+                        switch (question.getUrl()){
+                            case "":
+                                questionimg.setVisibility(View.GONE);
+                                break;
+                            default:
+                                questionimg.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                        questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+
                         explain.setText(question.getExplains());
 
                     }
@@ -332,7 +343,17 @@ public class MainActivity extends AppCompatActivity {
         item3.setText(question.getItem3());
         answer=question.getAnswer();
         item4.setText(question.getItem4());
-        questionimg.setImageUrl(question.getUrl());
+        //设置图片加载没有图片时隐藏
+        switch (question.getUrl()){
+            case "":
+                questionimg.setVisibility(View.GONE);
+                break;
+            default:
+                questionimg.setVisibility(View.VISIBLE);
+                break;
+        }
+        questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+
         explain.setText(question.getExplains());
         Log.d("xxx","item1:"+question.getItem1()+"item2:"+question.getItem2()+"item3:"+question.getItem3()+"item4:"+question.getItem4());
     }

@@ -63,7 +63,7 @@ public class QDBManger {
             String url=c.getString(c.getColumnIndex("url"));
             String collect=c.getString(c.getColumnIndex("collect"));
             Log.d("collect",collect);
-           Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username);
+           Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username,collect);
            lists.add(question1);
         }
         c.close();
@@ -88,7 +88,8 @@ public class QDBManger {
             String item4=c.getString(c.getColumnIndex("item4"));
             String explains=c.getString(c.getColumnIndex("explains"));
             String url=c.getString(c.getColumnIndex("url"));
-            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username);
+            String collect=c.getString(c.getColumnIndex("collect"));
+            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username,collect);
             lists.add(question1);
         }
         c.close();
@@ -111,7 +112,8 @@ public class QDBManger {
             String explains=c.getString(c.getColumnIndex("explains"));
             String url=c.getString(c.getColumnIndex("url"));
             String username=c.getString(c.getColumnIndex("username"));
-            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username);
+            String collect=c.getString(c.getColumnIndex("collect"));
+            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,username,collect);
             lists.add(question1);
         }
         c.close();
@@ -133,6 +135,20 @@ public class QDBManger {
         db.update("question", cv, "id=?", new String[]{String.valueOf(id)});
     }
 
+    //删除我的错题
+    public void deleteWrong(int id){
+        ContentValues cv=new ContentValues();
+        cv.put("username","");
+        db.update("question",cv,"id=?",new String[]{String.valueOf(id)});
+    }
+
+    //删除我的收藏题
+    public void deleteCollect(int id){
+        ContentValues cv=new ContentValues();
+        cv.put("collect","1");
+        db.update("question",cv,"id=?",new String[]{String.valueOf(id)});
+    }
+
     //获取我的收藏
     public List<Question> getCollect(){
         List<Question> lists=new ArrayList<Question>();
@@ -148,7 +164,8 @@ public class QDBManger {
             String item4=c.getString(c.getColumnIndex("item4"));
             String explains=c.getString(c.getColumnIndex("explains"));
             String url=c.getString(c.getColumnIndex("url"));
-            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,"");
+            String collect=c.getString(c.getColumnIndex("collect"));
+            Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,"",collect);
             lists.add(question1);
         }
         c.close();

@@ -11,6 +11,15 @@ public class Question {
     private String explains;
     private String url;
     private String username;
+    private String collect;
+
+    public String getCollect() {
+        return collect;
+    }
+
+    public void setCollect(String collect) {
+        this.collect = collect;
+    }
 
     public String getUsername() {
         return username;
@@ -92,7 +101,7 @@ public class Question {
         this.url = url;
     }
 
-    public Question(int id, String question, int answer, String item1, String item2, String item3, String item4, String explains, String url,String username)
+    public Question(int id, String question, int answer, String item1, String item2, String item3, String item4, String explains, String url,String username,String collect)
     {
         this.id = id;
         this.question = question;
@@ -104,5 +113,6 @@ public class Question {
         this.explains = explains;
         this.url = url;
         this.username=username;
+        this.collect=collect;
     }
 }

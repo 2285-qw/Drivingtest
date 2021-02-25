@@ -26,7 +26,7 @@ public class shuaJsonParse {
                 String item4=sonObject.getString("item4");
                 String explains=sonObject.getString("explains");
                 String url=sonObject.getString("url");
-                Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,null);
+                Question question1=new Question(id,question,answer,item1,item2,item3,item4,explains,url,null,"1");
                 lists.add(question1);
 
             }

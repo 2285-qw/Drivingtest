@@ -1,5 +1,6 @@
 package bzu.gc.gcfinalwork.ui;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,10 @@ public class collectActivity extends AppCompatActivity {
     private int answer;
     //计数器
     private int num = 0;
+    //对象
+    Question question;
+    //答题选项
+    private TextView t_item1;
 
     private TextView tittle;
     private RadioButton item1;
@@ -71,18 +76,37 @@ public class collectActivity extends AppCompatActivity {
         item4 = findViewById(R.id.item4);
         explain = findViewById(R.id.explain);
         questionimg = findViewById(R.id.questionimg);
+        t_item1=findViewById(R.id.t_item1);
+
+        Drawable nav_up=getResources().getDrawable(R.mipmap.d_true);
+        nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+        t_item1.setCompoundDrawables(nav_up, null, null, null);
     }
 
     private void setdata(int qth) {
-        Question question = list.get(qth);
+        question = list.get(qth);
         if (question != null) {
             tittle.setText(question.getQuestion());
             item1.setText(question.getItem1());
             item2.setText(question.getItem2());
             item3.setText(question.getItem3());
             item4.setText(question.getItem4());
+
+            item1.setClickable(false);
+
             answer = question.getAnswer();
-            questionimg.setImageUrl(question.getUrl());
+
+            //设置图片加载没有图片时隐藏
+            switch (question.getUrl()){
+                case "":
+                    questionimg.setVisibility(View.GONE);
+                    break;
+                default:
+                    questionimg.setVisibility(View.VISIBLE);
+                    break;
+            }
+            questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+
             explain.setText(question.getExplains());
         }
     }
@@ -100,6 +124,18 @@ public class collectActivity extends AppCompatActivity {
     //关闭点击时间内
     public void newfinish(View view) {
         finish();
+    }
+
+    //点击删除我的收藏
+    public void deleteCollect(View view){
+        qdbManger.deleteCollect(question.getId());
+        //更新list集合数据
+        list = qdbManger.getCollect();
+        int i = qdbManger.getWrongnum("111");
+        if (num >= i) {
+            num = 0;
+        }
+        setdata(num);
     }
 
 }
