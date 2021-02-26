@@ -1,11 +1,10 @@
 package bzu.gc.gcfinalwork.ui;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
@@ -13,6 +12,7 @@ import com.loopj.android.image.SmartImageView;
 import java.util.List;
 
 import bzu.gc.gcfinalwork.R;
+import bzu.gc.gcfinalwork.Util.utils;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 
@@ -33,16 +33,22 @@ public class collectActivity extends AppCompatActivity {
     private int num = 0;
     //对象
     Question question;
+
     //答题选项
     private TextView t_item1;
+    //答题选项
+    private TextView t_item2;
+    //答题选项
+    private TextView t_item3;
+    //答题选项
+    private TextView t_item4;
+    //解析
+    private TextView analytic;
 
     private TextView tittle;
-    private RadioButton item1;
-    private RadioButton item2;
-    private RadioButton item3;
-    private RadioButton item4;
     private TextView explain;
     private SmartImageView questionimg;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,34 +76,68 @@ public class collectActivity extends AppCompatActivity {
 
     private void initdata() {
         tittle = findViewById(R.id.tittle);
-        item1 = findViewById(R.id.item1);
-        item2 = findViewById(R.id.item2);
-        item3 = findViewById(R.id.item3);
-        item4 = findViewById(R.id.item4);
+
         explain = findViewById(R.id.explain);
         questionimg = findViewById(R.id.questionimg);
-        t_item1=findViewById(R.id.t_item1);
+        t_item1 = findViewById(R.id.t_item1);
+        t_item2 = findViewById(R.id.t_item2);
+        t_item3 = findViewById(R.id.t_item3);
+        t_item4 = findViewById(R.id.t_item4);
 
-        Drawable nav_up=getResources().getDrawable(R.mipmap.d_true);
-        nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-        t_item1.setCompoundDrawables(nav_up, null, null, null);
+        analytic = findViewById(R.id.analytic);
+
+
+        t_item1.setOnClickListener(new MyOnclick());
+        t_item2.setOnClickListener(new MyOnclick());
+        t_item3.setOnClickListener(new MyOnclick());
+        t_item4.setOnClickListener(new MyOnclick());
+
+
     }
 
     private void setdata(int qth) {
         question = list.get(qth);
         if (question != null) {
             tittle.setText(question.getQuestion());
-            item1.setText(question.getItem1());
-            item2.setText(question.getItem2());
-            item3.setText(question.getItem3());
-            item4.setText(question.getItem4());
 
-            item1.setClickable(false);
+            t_item1.setText(question.getItem1());
+            t_item2.setText(question.getItem2());
+            t_item3.setText(question.getItem3());
+            t_item4.setText(question.getItem4());
 
+            //判断是单选还是判断
+            switch (question.getItem3()) {
+                case "":
+                    t_item3.setVisibility(View.GONE);
+                    t_item4.setVisibility(View.GONE);
+                    break;
+                default:
+                    t_item3.setVisibility(View.VISIBLE);
+                    t_item4.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+            //答案数
             answer = question.getAnswer();
+            switch (answer) {
+                case 1:
+                    analytic.setText("解析：答案（"+"A"+"）");
+                    break;
+                case 2:
+                    analytic.setText("解析：答案（"+"B"+"）");
+                    break;
+                case 3:
+                    analytic.setText("解析：答案（"+"C"+"）");
+                    break;
+                case 4:
+                    analytic.setText("解析：答案（"+"D"+"）");
+                    break;
+
+            }
+
 
             //设置图片加载没有图片时隐藏
-            switch (question.getUrl()){
+            switch (question.getUrl()) {
                 case "":
                     questionimg.setVisibility(View.GONE);
                     break;
@@ -105,9 +145,10 @@ public class collectActivity extends AppCompatActivity {
                     questionimg.setVisibility(View.VISIBLE);
                     break;
             }
-            questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+            questionimg.setImageUrl(question.getUrl(), R.mipmap.icon, R.mipmap.icon1);
 
             explain.setText(question.getExplains());
+            Log.d("ex", question.getExplains());
         }
     }
 
@@ -119,6 +160,16 @@ public class collectActivity extends AppCompatActivity {
             num = 0;
         }
         setdata(num);
+
+        utils.setTextviewdraw(t_item1, R.mipmap.aa1, collectActivity.this);
+        utils.setTextviewdraw(t_item2, R.mipmap.b, collectActivity.this);
+        utils.setTextviewdraw(t_item3, R.mipmap.c, collectActivity.this);
+        utils.setTextviewdraw(t_item4, R.mipmap.d, collectActivity.this);
+
+        isture(true);
+
+        analytic.setVisibility(View.GONE);
+        explain.setVisibility(View.GONE);
     }
 
     //关闭点击时间内
@@ -127,7 +178,7 @@ public class collectActivity extends AppCompatActivity {
     }
 
     //点击删除我的收藏
-    public void deleteCollect(View view){
+    public void deleteCollect(View view) {
         qdbManger.deleteCollect(question.getId());
         //更新list集合数据
         list = qdbManger.getCollect();
@@ -136,6 +187,76 @@ public class collectActivity extends AppCompatActivity {
             num = 0;
         }
         setdata(num);
+    }
+
+    //答题点击事件
+    public class MyOnclick implements View.OnClickListener {
+        int selanswer;
+
+        @Override
+        public void onClick(View v) {
+            System.out.println(answer);
+            switch (v.getId()) {
+                case R.id.t_item1:
+                    if (answer != 1) {
+                        utils.setTextviewdraw(t_item1, R.mipmap.d_false, collectActivity.this);
+                        //显示答案解析
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item2:
+                    if (answer != 2) {
+                        utils.setTextviewdraw(t_item2, R.mipmap.d_false, collectActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item3:
+                    if (answer != 3) {
+                        utils.setTextviewdraw(t_item3, R.mipmap.d_false, collectActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item4:
+                    if (answer != 4) {
+                        utils.setTextviewdraw(t_item4, R.mipmap.d_false, collectActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+
+            //设置答题框不能被点击
+            isture(false);
+            switch (answer) {
+                case 1:
+                    utils.setTextviewdraw(t_item1, R.mipmap.d_true, collectActivity.this);
+                    break;
+                case 2:
+                    utils.setTextviewdraw(t_item2, R.mipmap.d_true, collectActivity.this);
+                    break;
+                case 3:
+                    utils.setTextviewdraw(t_item3, R.mipmap.d_true, collectActivity.this);
+                    break;
+                case 4:
+                    utils.setTextviewdraw(t_item4, R.mipmap.d_true, collectActivity.this);
+                    break;
+            }
+            System.out.println(selanswer);
+
+        }
+    }
+
+    //答题框是否可以被点击
+
+
+    private void isture(boolean on) {
+        t_item1.setClickable(on);
+        t_item2.setClickable(on);
+        t_item3.setClickable(on);
+        t_item4.setClickable(on);
     }
 
 }

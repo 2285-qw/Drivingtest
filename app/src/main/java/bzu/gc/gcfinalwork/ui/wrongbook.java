@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
@@ -15,6 +14,7 @@ import com.loopj.android.image.SmartImageView;
 import java.util.List;
 
 import bzu.gc.gcfinalwork.R;
+import bzu.gc.gcfinalwork.Util.utils;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 
@@ -40,10 +40,16 @@ public class wrongbook extends AppCompatActivity {
     Question question;
 
     private TextView tittle;
-    private RadioButton item1;
-    private RadioButton item2;
-    private RadioButton item3;
-    private RadioButton item4;
+    //答题选项
+    private TextView t_item1;
+    //答题选项
+    private TextView t_item2;
+    //答题选项
+    private TextView t_item3;
+    //答题选项
+    private TextView t_item4;
+    //解析
+    private TextView analytic;
     private TextView explain;
     private SmartImageView questionimg;
     //收藏图标
@@ -76,10 +82,20 @@ public class wrongbook extends AppCompatActivity {
 
     private void initdata() {
         tittle = findViewById(R.id.tittle);
-        item1 = findViewById(R.id.item1);
-        item2 = findViewById(R.id.item2);
-        item3 = findViewById(R.id.item3);
-        item4 = findViewById(R.id.item4);
+
+        t_item1 = findViewById(R.id.t_item1);
+        t_item2 = findViewById(R.id.t_item2);
+        t_item3 = findViewById(R.id.t_item3);
+        t_item4 = findViewById(R.id.t_item4);
+
+        analytic = findViewById(R.id.analytic);
+
+
+        t_item1.setOnClickListener(new MyOnclick());
+        t_item2.setOnClickListener(new MyOnclick());
+        t_item3.setOnClickListener(new MyOnclick());
+        t_item4.setOnClickListener(new MyOnclick());
+
         explain = findViewById(R.id.explain);
         questionimg = findViewById(R.id.questionimg);
         collect=findViewById(R.id.collect);
@@ -90,11 +106,41 @@ public class wrongbook extends AppCompatActivity {
         question = list.get(qth);
         if (question != null) {
             tittle.setText(question.getQuestion());
-            item1.setText(question.getItem1());
-            item2.setText(question.getItem2());
-            item3.setText(question.getItem3());
-            item4.setText(question.getItem4());
+            t_item1.setText(question.getItem1());
+            t_item2.setText(question.getItem2());
+            t_item3.setText(question.getItem3());
+            t_item4.setText(question.getItem4());
+
+            //判断是单选还是判断
+            switch (question.getItem3()) {
+                case "":
+                    t_item3.setVisibility(View.GONE);
+                    t_item4.setVisibility(View.GONE);
+                    break;
+                default:
+                    t_item3.setVisibility(View.VISIBLE);
+                    t_item4.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+            //答案数
             answer = question.getAnswer();
+            switch (answer) {
+                case 1:
+                    analytic.setText("解析：答案（"+"A"+"）");
+                    break;
+                case 2:
+                    analytic.setText("解析：答案（"+"B"+"）");
+                    break;
+                case 3:
+                    analytic.setText("解析：答案（"+"C"+"）");
+                    break;
+                case 4:
+                    analytic.setText("解析：答案（"+"D"+"）");
+                    break;
+
+            }
+
 
             //设置图片加载没有图片时隐藏
             switch (question.getUrl()){
@@ -132,6 +178,16 @@ public class wrongbook extends AppCompatActivity {
             num = 0;
         }
         setdata(num);
+
+        utils.setTextviewdraw(t_item1, R.mipmap.aa1, wrongbook.this);
+        utils.setTextviewdraw(t_item2, R.mipmap.b, wrongbook.this);
+        utils.setTextviewdraw(t_item3, R.mipmap.c, wrongbook.this);
+        utils.setTextviewdraw(t_item4, R.mipmap.d, wrongbook.this);
+
+        isture(true);
+
+        analytic.setVisibility(View.GONE);
+        explain.setVisibility(View.GONE);
     }
 
     //关闭点击时间内
@@ -145,7 +201,7 @@ public class wrongbook extends AppCompatActivity {
         Log.d("id",question.getId()+"");
         qdbManger.addCollect(question.getId());
         collect.setImageResource(R.mipmap.icon);
-        t_collect.setTextColor(Color.parseColor("#fa6e52"));
+        t_collect.setTextColor(Color.parseColor("#FEB354"));
 
     }
 
@@ -162,5 +218,73 @@ public class wrongbook extends AppCompatActivity {
         }
         setdata(num);
     }
+    //答题点击事件
+    public class MyOnclick implements View.OnClickListener {
+        int selanswer;
 
+        @Override
+        public void onClick(View v) {
+            System.out.println(answer);
+            switch (v.getId()) {
+                case R.id.t_item1:
+                    if (answer != 1) {
+                        utils.setTextviewdraw(t_item1, R.mipmap.d_false, wrongbook.this);
+                        //显示答案解析
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item2:
+                    if (answer != 2) {
+                        utils.setTextviewdraw(t_item2, R.mipmap.d_false, wrongbook.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item3:
+                    if (answer != 3) {
+                        utils.setTextviewdraw(t_item3, R.mipmap.d_false, wrongbook.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item4:
+                    if (answer != 4) {
+                        utils.setTextviewdraw(t_item4, R.mipmap.d_false, wrongbook.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+
+            //设置答题框不能被点击
+            isture(false);
+            switch (answer) {
+                case 1:
+                    utils.setTextviewdraw(t_item1, R.mipmap.d_true, wrongbook.this);
+                    break;
+                case 2:
+                    utils.setTextviewdraw(t_item2, R.mipmap.d_true, wrongbook.this);
+                    break;
+                case 3:
+                    utils.setTextviewdraw(t_item3, R.mipmap.d_true, wrongbook.this);
+                    break;
+                case 4:
+                    utils.setTextviewdraw(t_item4, R.mipmap.d_true, wrongbook.this);
+                    break;
+            }
+            System.out.println(selanswer);
+
+        }
+    }
+
+    //答题框是否可以被点击
+
+
+    private void isture(boolean on) {
+        t_item1.setClickable(on);
+        t_item2.setClickable(on);
+        t_item3.setClickable(on);
+        t_item4.setClickable(on);
+    }
 }

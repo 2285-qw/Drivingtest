@@ -32,6 +32,7 @@ import bzu.gc.gcfinalwork.entity.Question;
 import bzu.gc.gcfinalwork.entity.ShopInfo;
 import bzu.gc.gcfinalwork.tools.shuaJsonParse;
 import bzu.gc.gcfinalwork.ui.collectActivity;
+import bzu.gc.gcfinalwork.ui.collectList;
 import bzu.gc.gcfinalwork.ui.wrongbook;
 
 public class MainActivity extends AppCompatActivity {
@@ -359,7 +360,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public class myselect implements RadioGroup.OnCheckedChangeListener{
         int selanswer;
-
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             System.out.println(answer);
@@ -411,6 +411,12 @@ public class MainActivity extends AppCompatActivity {
     //跳转至我的收藏
     public void skipCollect(View view){
         Intent intent=new Intent(MainActivity.this, collectActivity.class);
+        startActivity(intent);
+    }
+
+    //跳转至我的收藏主页面
+    public void skip(View view){
+        Intent intent=new Intent(MainActivity.this, collectList.class);
         startActivity(intent);
     }
 }

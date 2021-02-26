@@ -26,6 +26,8 @@
         <activity android:name=".ui.wrongbook"></activity>
         <!--收藏题页面-->
         <activity android:name=".ui.collectActivity"></activity>
+        <!--收藏题主页面-->
+        <activity android:name=".ui.collectList"></activity>
         <!--闪题页面-->
         <activity android:name=".startpage">
             <intent-filter>
