@@ -1,5 +1,6 @@
 package bzu.gc.gcfinalwork.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -64,10 +65,11 @@ public class collectActivity extends AppCompatActivity {
         list = qdbManger.getCollect();
         //初始化数据
         initdata();
-
+        Intent intent = getIntent();
+        num = intent.getIntExtra("position", num);
+        Log.d("num",num+"");
         if (list != null) {
-            int qth = 0;
-            setdata(qth);
+            setdata(num);
         }
 
 
@@ -121,16 +123,16 @@ public class collectActivity extends AppCompatActivity {
             answer = question.getAnswer();
             switch (answer) {
                 case 1:
-                    analytic.setText("解析：答案（"+"A"+"）");
+                    analytic.setText("解析：答案（" + "A" + "）");
                     break;
                 case 2:
-                    analytic.setText("解析：答案（"+"B"+"）");
+                    analytic.setText("解析：答案（" + "B" + "）");
                     break;
                 case 3:
-                    analytic.setText("解析：答案（"+"C"+"）");
+                    analytic.setText("解析：答案（" + "C" + "）");
                     break;
                 case 4:
-                    analytic.setText("解析：答案（"+"D"+"）");
+                    analytic.setText("解析：答案（" + "D" + "）");
                     break;
 
             }
@@ -250,8 +252,6 @@ public class collectActivity extends AppCompatActivity {
     }
 
     //答题框是否可以被点击
-
-
     private void isture(boolean on) {
         t_item1.setClickable(on);
         t_item2.setClickable(on);

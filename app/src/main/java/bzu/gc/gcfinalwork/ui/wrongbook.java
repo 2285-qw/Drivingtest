@@ -102,6 +102,8 @@ public class wrongbook extends AppCompatActivity {
         t_collect=findViewById(R.id.t_collect);
     }
 
+
+    //设置题目加载显示
     private void setdata(int qth) {
         question = list.get(qth);
         if (question != null) {

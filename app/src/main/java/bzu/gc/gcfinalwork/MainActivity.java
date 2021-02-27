@@ -11,21 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.image.SmartImageView;
 
-import org.apache.http.Header;
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bzu.gc.gcfinalwork.Util.JsonReadUtil;
+import bzu.gc.gcfinalwork.Util.utils;
 import bzu.gc.gcfinalwork.db.DBManger;
 import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
@@ -36,6 +30,10 @@ import bzu.gc.gcfinalwork.ui.collectList;
 import bzu.gc.gcfinalwork.ui.wrongbook;
 
 public class MainActivity extends AppCompatActivity {
+
+    //文件名称
+    private final static String CityFileName = "allcity.json";
+
     private ArrayList<View> pageview;
     private ViewPager viewPager;
 
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mineout;
 
     private int islogin = 0;
-    private int time =21;
+    private int time = 21;
 
     private DBManger dbManger;
     private QDBManger qdbManger;
@@ -52,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
     private String password;
 
     private int allnum;
+
+
+    //对象
+    Question question;
+    //错题本集合
+    private List<Question> list;
+    //解析
+    private TextView analytic;
 
 
     private View viewhome;
@@ -63,17 +69,14 @@ public class MainActivity extends AppCompatActivity {
     private View viewshua;
     private List<Question> Qlist;
     private TextView tittle;
-    private RadioButton item1;
-    private RadioButton item2;
-    private RadioButton item3;
-    private RadioButton item4;
+    private TextView t_item1;
+    private TextView t_item2;
+    private TextView t_item3;
+    private TextView t_item4;
     private TextView explain;
     private SmartImageView questionimg;
-    private int num=0;
-    private RadioGroup select;
+    private int num = 0;
     private int answer;
-    private ImageView right;
-    private ImageView error;
 
     private List<ShopInfo> lists;
 
@@ -153,11 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
-                if (i==0){
+                if (i == 0) {
 
                 }
 
-                switch (i){
+                switch (i) {
                     case 0:
                         homei.setImageResource(R.mipmap.homeclick);
                         answeri.setImageResource(R.mipmap.answer);
@@ -168,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                         //设置错题数
-                        home_errornum.setText(qdbManger.getWrongnum("111")+"");
+                        home_errornum.setText(qdbManger.getWrongnum("111") + "");
                         //设置刷题总量
-                        home_allnum.setText(qdbManger.getWrongnum()+"");
+                        home_allnum.setText(qdbManger.getWrongnum() + "");
                         //设置收藏题数
-                        home_errornum1.setText(qdbManger.getCollect().size()+"");
+                        home_errornum1.setText(qdbManger.getCollect().size() + "");
 
                         break;
                     case 1:
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        select.setOnCheckedChangeListener(new myselect());
+
     }
 
 
@@ -209,16 +212,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //设置错题数
-        home_errornum.setText(qdbManger.getWrongnum("111")+"");
+        home_errornum.setText(qdbManger.getWrongnum("111") + "");
         //设置刷题总量
-        home_allnum.setText(qdbManger.getWrongnum()+"");
+        home_allnum.setText(qdbManger.getWrongnum() + "");
         //获取收藏题数
-        List list=new ArrayList();
-        list=qdbManger.getCollect();
-        Log.d("list",list.size()+"++++"+list);
+        List list = new ArrayList();
+        list = qdbManger.getCollect();
+        Log.d("list", list.size() + "++++" + list);
 
         //设置收藏题数
-        home_errornum1.setText(qdbManger.getCollect().size()+"");
+        home_errornum1.setText(qdbManger.getCollect().size() + "");
 
     }
 
@@ -226,15 +229,15 @@ public class MainActivity extends AppCompatActivity {
     //初始化页面
     public void init() {
         dbManger = new DBManger(this);
-        qdbManger=new QDBManger(this);
+        qdbManger = new QDBManger(this);
         viewPager = (ViewPager) findViewById(R.id.ViewPage);
 
-        homeout=findViewById(R.id.homeout);
-        shuaout=findViewById(R.id.shuaout);
-        mineout=findViewById(R.id.mineout);
-        homei=findViewById(R.id.homeI);
-        answeri=findViewById(R.id.answeri);
-        myi=findViewById(R.id.myi);
+        homeout = findViewById(R.id.homeout);
+        shuaout = findViewById(R.id.shuaout);
+        mineout = findViewById(R.id.mineout);
+        homei = findViewById(R.id.homeI);
+        answeri = findViewById(R.id.answeri);
+        myi = findViewById(R.id.myi);
 
 
         home_allnum = viewhome.findViewById(R.id.home_allnum);
@@ -242,25 +245,31 @@ public class MainActivity extends AppCompatActivity {
         home_errornum1 = viewhome.findViewById(R.id.home_errornum1);
 
 
-        tittle=viewshua.findViewById(R.id.tittle);
-        item1=viewshua.findViewById(R.id.item1);
-        item2=viewshua.findViewById(R.id.item2);
-        item3=viewshua.findViewById(R.id.item3);
-        item4=viewshua.findViewById(R.id.item4);
-        explain=viewshua.findViewById(R.id.explain);
-        questionimg=viewshua.findViewById(R.id.questionimg);
-        select=viewshua.findViewById(R.id.select);
-        right=viewshua.findViewById(R.id.right);
-        error=viewshua.findViewById(R.id.error);
+        tittle = viewshua.findViewById(R.id.tittle);
+        t_item1 = viewshua.findViewById(R.id.t_item1);
+        t_item2 = viewshua.findViewById(R.id.t_item2);
+        t_item3 = viewshua.findViewById(R.id.t_item3);
+        t_item4 = viewshua.findViewById(R.id.t_item4);
+        explain = viewshua.findViewById(R.id.explain);
+        questionimg = viewshua.findViewById(R.id.questionimg);
+        analytic = viewshua.findViewById(R.id.analytic);
+
+
+        t_item1.setOnClickListener(new MainActivity.MyOnclick());
+        t_item2.setOnClickListener(new MainActivity.MyOnclick());
+        t_item3.setOnClickListener(new MainActivity.MyOnclick());
+        t_item4.setOnClickListener(new MainActivity.MyOnclick());
+
+
     }
 
     //点击跳转首页
     public void click1(View v) {
         viewPager.setCurrentItem(0);
-        dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
+        dbManger.updatewrong(qdbManger.getWrongnum("111"), "111");
 
         //设置刷题总量
-        home_allnum.setText(qdbManger.getWrongnum()+"");  //设置刷题总量
+        home_allnum.setText(qdbManger.getWrongnum() + "");  //设置刷题总量
 
     }
 
@@ -277,9 +286,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //聚合数据获取
-    public void getresource(){
-        final int qth=0;
-        AsyncHttpClient asyncHttpClient=new AsyncHttpClient();
+    public void getresource() {
+        final int qth = 0;
+        //本地获取数据
+        String cityListJson = JsonReadUtil.getJsonStr(this, CityFileName);
+        Qlist = shuaJsonParse.getquestioninfo(cityListJson);
+        if (Qlist != null) {
+            setdata(qth);
+        }
+
+
+        //网络获取数据
+        /*AsyncHttpClient asyncHttpClient=new AsyncHttpClient();
         asyncHttpClient.get("http://v.juhe.cn/jztk/query?subject=1&model=c1&key=862acb53c483cea2bc5dd5aed3b33bfa&testType=rand", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -290,29 +308,11 @@ public class MainActivity extends AppCompatActivity {
                     Qlist= shuaJsonParse.getquestioninfo(json);
                     //System.out.println(Qlist.size());
                     if (Qlist!=null){
-                        Question question= Qlist.get(qth);
-                        tittle.setText(question.getQuestion());
-                        item1.setText(question.getItem1());
-                        item2.setText(question.getItem2());
-                        item3.setText(question.getItem3());
-                        item4.setText(question.getItem4());
-                        answer=question.getAnswer();
-                        //设置图片加载没有图片时隐藏
-                        switch (question.getUrl()){
-                            case "":
-                                questionimg.setVisibility(View.GONE);
-                                break;
-                            default:
-                                questionimg.setVisibility(View.VISIBLE);
-                                break;
-                        }
-                        questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
-
-                        explain.setText(question.getExplains());
-
+                        setdata(qth);
                     }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    System.out.println("000000000000000000000");
 
                 }
             }
@@ -321,102 +321,194 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                 Toast.makeText(MainActivity.this, "网络请求失败", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
-
-    public void newtquestion(View view){
+    //下一题点击按钮
+    public void newtquestion(View view) {
         explain.setVisibility(View.INVISIBLE);
-
-        allnum=dbManger.getallnum(username);
-        dbManger.upallnum(allnum,username);
-        right.setVisibility(View.INVISIBLE);
-        error.setVisibility(View.INVISIBLE);
+        allnum = dbManger.getallnum(username);
+        dbManger.upallnum(allnum, username);
         num++;
-        if(num==100){
+        Log.d("id",question.getId()+"");
+        if (num == Qlist.size()) {
             getresource();
-            num=0;
+            num = 0;
         }
-        Question question= Qlist.get(num);
-        tittle.setText(question.getQuestion());
-        item1.setText(question.getItem1());
-        item2.setText(question.getItem2());
-        item3.setText(question.getItem3());
-        answer=question.getAnswer();
-        item4.setText(question.getItem4());
-        //设置图片加载没有图片时隐藏
-        switch (question.getUrl()){
-            case "":
-                questionimg.setVisibility(View.GONE);
-                break;
-            default:
-                questionimg.setVisibility(View.VISIBLE);
-                break;
-        }
-        questionimg.setImageUrl(question.getUrl(),R.mipmap.icon,R.mipmap.icon1);
+        setdata(num);
 
-        explain.setText(question.getExplains());
-        Log.d("xxx","item1:"+question.getItem1()+"item2:"+question.getItem2()+"item3:"+question.getItem3()+"item4:"+question.getItem4());
+        utils.setTextviewdraw(t_item1, R.mipmap.aa1, MainActivity.this);
+        utils.setTextviewdraw(t_item2, R.mipmap.b, MainActivity.this);
+        utils.setTextviewdraw(t_item3, R.mipmap.c, MainActivity.this);
+        utils.setTextviewdraw(t_item4, R.mipmap.d, MainActivity.this);
+
+        isture(true);
+
+        analytic.setVisibility(View.GONE);
+        explain.setVisibility(View.GONE);
     }
-    public class myselect implements RadioGroup.OnCheckedChangeListener{
-        int selanswer;
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            System.out.println(answer);
-            switch (checkedId){
-                case R.id.item1:
-                    selanswer=1;
-                    break;
-                case R.id.item2:
-                    selanswer=2;
-                    break;
-                case R.id.item3:
-                    selanswer=3;
-                    break;
-                case R.id.item4:
-                    selanswer=4;
-                    break;
-            }
-            System.out.println(selanswer);
-            if (selanswer==answer){
 
-                error.setVisibility(View.INVISIBLE);
-                right.setVisibility(View.VISIBLE);
-                explain.setVisibility(View.VISIBLE);
-                if (!qdbManger.idfrist((Qlist.get(num).getId()))){
-                    qdbManger.add(Qlist.get(num),"");
-                }
-
-            }else
-            {
-                //====================================================================================
-                dbManger.updatewrong(qdbManger.getWrongnum("111"),"111");
-                if (!qdbManger.idfrist((Qlist.get(num).getId()))){
-                qdbManger.add(Qlist.get(num),"111");
-            }
-
-                error.setVisibility(View.VISIBLE);
-                right.setVisibility(View.INVISIBLE);
-                explain.setVisibility(View.VISIBLE);
-            }
-        }
-    }
     //跳转至我的错题本
-    public void tomywronglist(View view){
-        Intent intent=new Intent(MainActivity.this, wrongbook.class);
-        intent.putExtra("username",username);
+    public void tomywronglist(View view) {
+        Intent intent = new Intent(MainActivity.this, wrongbook.class);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 
     //跳转至我的收藏
-    public void skipCollect(View view){
-        Intent intent=new Intent(MainActivity.this, collectActivity.class);
+    public void skipCollect(View view) {
+        Intent intent = new Intent(MainActivity.this, collectActivity.class);
         startActivity(intent);
     }
 
     //跳转至我的收藏主页面
-    public void skip(View view){
-        Intent intent=new Intent(MainActivity.this, collectList.class);
+    public void skip(View view) {
+        Intent intent = new Intent(MainActivity.this, collectList.class);
         startActivity(intent);
+    }
+
+    //设置题目加载显示
+    private void setdata(int qth) {
+        question = Qlist.get(qth);
+        if (question != null) {
+            tittle.setText(question.getQuestion());
+            t_item1.setText(question.getItem1());
+            t_item2.setText(question.getItem2());
+            t_item3.setText(question.getItem3());
+            t_item4.setText(question.getItem4());
+
+            //判断是单选还是判断
+            switch (question.getItem3()) {
+                case "":
+                    t_item3.setVisibility(View.GONE);
+                    t_item4.setVisibility(View.GONE);
+                    break;
+                default:
+                    t_item3.setVisibility(View.VISIBLE);
+                    t_item4.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+            //答案数
+            answer = question.getAnswer();
+            switch (answer) {
+                case 1:
+                    analytic.setText("解析：答案（" + "A" + "）");
+                    break;
+                case 2:
+                    analytic.setText("解析：答案（" + "B" + "）");
+                    break;
+                case 3:
+                    analytic.setText("解析：答案（" + "C" + "）");
+                    break;
+                case 4:
+                    analytic.setText("解析：答案（" + "D" + "）");
+                    break;
+
+            }
+
+
+            //设置图片加载没有图片时隐藏
+            switch (question.getUrl()) {
+                case "":
+                    questionimg.setVisibility(View.GONE);
+                    break;
+                default:
+                    questionimg.setVisibility(View.VISIBLE);
+                    break;
+            }
+            questionimg.setImageUrl(question.getUrl(), R.mipmap.icon, R.mipmap.icon1);
+
+            explain.setText(question.getExplains());
+
+            Log.d("getcollect", question.getCollect().trim());
+            /*switch (question.getCollect()){
+                case "0":
+                    collect.setImageResource(R.mipmap.icon);
+                    t_collect.setTextColor(Color.parseColor("#fa6e52"));
+                    break;
+                case "1":
+                    collect.setImageResource(R.mipmap.icon1);
+                    t_collect.setTextColor(Color.parseColor("#000000"));
+                    break;
+
+            }*/
+        }
+    }
+
+    //答题点击事件
+    public class MyOnclick implements View.OnClickListener {
+        int selanswer;
+
+        @Override
+        public void onClick(View v) {
+            System.out.println(answer);
+            Log.d("QQQ", qdbManger.isId(question.getId()) + "");
+            if (!qdbManger.isId(question.getId())) {
+                //添加刷题数
+                qdbManger.add(question, "");
+            }
+
+            switch (v.getId()) {
+                case R.id.t_item1:
+                    if (answer != 1) {
+                        utils.setTextviewdraw(t_item1, R.mipmap.d_false, MainActivity.this);
+                        //显示答案解析
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                        //添加错题数
+                        qdbManger.addDelete(question.getId(), "111");
+                    }
+                    break;
+                case R.id.t_item2:
+                    if (answer != 2) {
+                        utils.setTextviewdraw(t_item2, R.mipmap.d_false, MainActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item3:
+                    if (answer != 3) {
+                        utils.setTextviewdraw(t_item3, R.mipmap.d_false, MainActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case R.id.t_item4:
+                    if (answer != 4) {
+                        utils.setTextviewdraw(t_item4, R.mipmap.d_false, MainActivity.this);
+                        analytic.setVisibility(View.VISIBLE);
+                        explain.setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+
+            //设置答题框不能被点击
+            isture(false);
+            switch (answer) {
+                case 1:
+                    utils.setTextviewdraw(t_item1, R.mipmap.d_true, MainActivity.this);
+                    break;
+                case 2:
+                    utils.setTextviewdraw(t_item2, R.mipmap.d_true, MainActivity.this);
+                    break;
+                case 3:
+                    utils.setTextviewdraw(t_item3, R.mipmap.d_true, MainActivity.this);
+                    break;
+                case 4:
+                    utils.setTextviewdraw(t_item4, R.mipmap.d_true, MainActivity.this);
+                    break;
+            }
+            System.out.println(selanswer);
+
+        }
+    }
+
+    //答题框是否可以被点击
+    private void isture(boolean on) {
+        t_item1.setClickable(on);
+        t_item2.setClickable(on);
+        t_item3.setClickable(on);
+        t_item4.setClickable(on);
     }
 }

@@ -1,5 +1,6 @@
 package bzu.gc.gcfinalwork.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,11 @@ public class collectList extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                System.out.println(position);
+                //跳转到收藏题页面
+                Intent intent=new Intent(collectList.this,collectActivity.class);
+                intent.putExtra("position",position);
+                startActivity(intent);
             }
         });
     }

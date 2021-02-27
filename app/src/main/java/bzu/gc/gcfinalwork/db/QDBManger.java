@@ -38,7 +38,7 @@ public class QDBManger {
     }
 
 
-    //增加错题
+    //增加刷题数
     public void add(Question question,String username) {
         db.execSQL("INSERT INTO " + QDatebaseHelper.TABLE_NAME
                 + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", new Object[]{question.getId(),
@@ -46,6 +46,13 @@ public class QDBManger {
                 ,question.getItem4(),question.getExplains(),question.getUrl(),username,"1"
         });
     }
+    //添加错题数
+    public void addDelete(int id,String password) {
+        ContentValues cv = new ContentValues();
+        cv.put("username", "111");
+        db.update("question", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
     //获取错题
     public List<Question> finderror(String username){
         List<Question> lists=new ArrayList<Question>();
@@ -69,6 +76,17 @@ public class QDBManger {
         c.close();
         wrongnum=lists.size();
         return lists;
+    }
+
+    //判断id是否存在
+    public boolean isId(int id){
+        boolean isid;
+        Cursor c = db.rawQuery("select * from question where id=?", new String[]{String.valueOf(id)});
+        Log.d("ccc",c+"");
+        while(c.moveToNext()){
+           return true;
+        }
+        return false;
     }
     //删除错题
     public void deleterror(int id){
