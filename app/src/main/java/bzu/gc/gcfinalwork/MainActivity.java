@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import bzu.gc.gcfinalwork.db.QDBManger;
 import bzu.gc.gcfinalwork.entity.Question;
 import bzu.gc.gcfinalwork.entity.ShopInfo;
 import bzu.gc.gcfinalwork.tools.shuaJsonParse;
-import bzu.gc.gcfinalwork.ui.collectActivity;
+import bzu.gc.gcfinalwork.ui.PrivacyActivity;
 import bzu.gc.gcfinalwork.ui.collectList;
 import bzu.gc.gcfinalwork.ui.wrongbook;
 
@@ -211,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        MobclickAgent.onResume(this);
         //设置错题数
         home_errornum.setText(qdbManger.getWrongnum("111") + "");
         //设置刷题总量
@@ -357,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
     //跳转至我的收藏
     public void skipCollect(View view) {
-        Intent intent = new Intent(MainActivity.this, collectActivity.class);
+        Intent intent = new Intent(MainActivity.this, collectList.class);
         startActivity(intent);
     }
 
@@ -366,6 +369,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, collectList.class);
         startActivity(intent);
     }
+
+    //跳转至隐私政策页面
+    public void jump(View view) {
+        Intent intent = new Intent(MainActivity.this, PrivacyActivity.class);
+        startActivity(intent);
+    }
+
 
     //设置题目加载显示
     private void setdata(int qth) {
@@ -502,6 +512,12 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(selanswer);
 
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onResume(this);
     }
 
     //答题框是否可以被点击
