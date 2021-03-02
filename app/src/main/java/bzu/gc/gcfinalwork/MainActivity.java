@@ -1,7 +1,9 @@
 
 package bzu.gc.gcfinalwork;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView t_item4;
     private TextView explain;
     private SmartImageView questionimg;
-    private int num = 0;
+    private int num;
     private int answer;
 
     private List<ShopInfo> lists;
@@ -89,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView answeri;
     //底部我的图标
     private ImageView myi;
+    //底部对题
+    TextView t_true;
+    //底部错题
+    TextView t_false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        //创建轻量级储存
+        SharedPreferences sp = MainActivity.this.getSharedPreferences("shu", Context.MODE_PRIVATE);
+        //读取
+        num=sp.getInt("num",0);
+        Log.d("num",num+"");
 
 
         //查找布局文件
@@ -216,8 +229,11 @@ public class MainActivity extends AppCompatActivity {
         MobclickAgent.onResume(this);
         //设置错题数
         home_errornum.setText(qdbManger.getWrongnum("111") + "");
+        t_false.setText(qdbManger.getWrongnum("111") + "");
         //设置刷题总量
         home_allnum.setText(qdbManger.getWrongnum() + "");
+        //设置对题数
+        t_true.setText(qdbManger.getWrongnum() - qdbManger.getWrongnum("111") + "");
         //获取收藏题数
         List list = new ArrayList();
         list = qdbManger.getCollect();
@@ -256,6 +272,8 @@ public class MainActivity extends AppCompatActivity {
         explain = viewshua.findViewById(R.id.explain);
         questionimg = viewshua.findViewById(R.id.questionimg);
         analytic = viewshua.findViewById(R.id.analytic);
+        t_true = viewshua.findViewById(R.id.t_true);
+        t_false = viewshua.findViewById(R.id.t_false);
 
 
         t_item1.setOnClickListener(new MainActivity.MyOnclick());
@@ -290,12 +308,11 @@ public class MainActivity extends AppCompatActivity {
 
     //聚合数据获取
     public void getresource() {
-        final int qth = 0;
         //本地获取数据
         String cityListJson = JsonReadUtil.getJsonStr(this, CityFileName);
         Qlist = shuaJsonParse.getquestioninfo(cityListJson);
         if (Qlist != null) {
-            setdata(qth);
+            setdata(num);
         }
 
 
@@ -333,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
         allnum = dbManger.getallnum(username);
         dbManger.upallnum(allnum, username);
         num++;
-        Log.d("id",question.getId()+"");
+        Log.d("id", question.getId() + "");
         if (num == Qlist.size()) {
             getresource();
             num = 0;
@@ -427,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
                     questionimg.setVisibility(View.VISIBLE);
                     break;
             }
-            questionimg.setImageUrl(question.getUrl(), R.mipmap.icon, R.mipmap.icon1);
+            questionimg.setImageUrl(question.getUrl(), R.mipmap.nonet, R.mipmap.nonet);
 
             explain.setText(question.getExplains());
 
@@ -475,6 +492,8 @@ public class MainActivity extends AppCompatActivity {
                         utils.setTextviewdraw(t_item2, R.mipmap.d_false, MainActivity.this);
                         analytic.setVisibility(View.VISIBLE);
                         explain.setVisibility(View.VISIBLE);
+                        //添加错题数
+                        qdbManger.addDelete(question.getId(), "111");
                     }
                     break;
                 case R.id.t_item3:
@@ -482,6 +501,8 @@ public class MainActivity extends AppCompatActivity {
                         utils.setTextviewdraw(t_item3, R.mipmap.d_false, MainActivity.this);
                         analytic.setVisibility(View.VISIBLE);
                         explain.setVisibility(View.VISIBLE);
+                        //添加错题数
+                        qdbManger.addDelete(question.getId(), "111");
                     }
                     break;
                 case R.id.t_item4:
@@ -489,12 +510,19 @@ public class MainActivity extends AppCompatActivity {
                         utils.setTextviewdraw(t_item4, R.mipmap.d_false, MainActivity.this);
                         analytic.setVisibility(View.VISIBLE);
                         explain.setVisibility(View.VISIBLE);
+                        //添加错题数
+                        qdbManger.addDelete(question.getId(), "111");
                     }
                     break;
             }
+            //设置错题数
+            t_false.setText(qdbManger.getWrongnum("111") + "");
+            //设置对题数
+            t_true.setText(qdbManger.getWrongnum() - qdbManger.getWrongnum("111") + "");
 
             //设置答题框不能被点击
             isture(false);
+
             switch (answer) {
                 case 1:
                     utils.setTextviewdraw(t_item1, R.mipmap.d_true, MainActivity.this);
@@ -526,5 +554,27 @@ public class MainActivity extends AppCompatActivity {
         t_item2.setClickable(on);
         t_item3.setClickable(on);
         t_item4.setClickable(on);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //创建轻量级储存
+        SharedPreferences sp = MainActivity.this.getSharedPreferences("shu", Context.MODE_PRIVATE);
+        //设置可编辑
+        SharedPreferences.Editor spe = sp.edit();
+        //储存答题id
+        spe.putInt("num", num).commit();
+        int i=sp.getInt("num",0);
+        Log.d("num",num+"");
+        Log.d("num",i+"");
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+
     }
 }

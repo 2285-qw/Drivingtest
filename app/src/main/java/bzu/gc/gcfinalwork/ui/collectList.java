@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,8 @@ public class collectList extends AppCompatActivity {
     private ListView lv;
     //对象
     Question question;
+    //图片
+    ImageView imageView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class collectList extends AppCompatActivity {
         }
 
         lv=findViewById(R.id.lv);
-
+        imageView=findViewById(R.id.image);
         //初始化数据库
         qdbManger = new QDBManger(this);
         //初始化集合数据
@@ -69,6 +72,13 @@ public class collectList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (list.size()==0){
+            imageView.setVisibility(View.VISIBLE);
+        }else {
+            imageView.setVisibility(View.GONE);
+        }
+
     }
 
     private class MyAdapter extends BaseAdapter{
