@@ -7,4 +7,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="xieyi" translatable="false">请你务必审慎阅读、充分理解"服务协议"和"隐私协议"各条款，
+        包括但不限于：为了向你提供翻译服务，我们需要收集你的设备信息、操作日志等个人信息。你可以在"设置"中查看、变更、删除个人信息并管理你的授权。
+    你可阅读《隐私政策》了解详细信息。如你同意，请点击"同意"开始接受我们的服务</string>
 </resources>

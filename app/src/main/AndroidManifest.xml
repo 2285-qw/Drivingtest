@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bzu.gc.gcfinalwork">
+    package="bzu.gc.gcfinalworkhuihaoda">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 
     <application
-        android:name="bzu.gc.gcfinalwork.Application.BaseApplication"
+        android:name="bzu.gc.gcfinalworkhuihaoda.Application.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -21,19 +21,21 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".wrnglists"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.wrnglists"></activity>
         <!--主页面-->
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.MainActivity"></activity>
         <!--错题本页面-->
-        <activity android:name=".ui.wrongbook"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.ui.wrongbook"></activity>
+        <!--错题本主页面-->
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.ui.wronglist"></activity>
         <!--收藏题页面-->
-        <activity android:name=".ui.collectActivity"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.ui.collectActivity"></activity>
         <!--收藏题主页面-->
-        <activity android:name=".ui.collectList"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.ui.collectList"></activity>
         <!--隐私政策页面-->
-        <activity android:name=".ui.PrivacyActivity"></activity>
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.ui.PrivacyActivity"></activity>
         <!--闪题页面-->
-        <activity android:name=".startpage">
+        <activity android:name="bzu.gc.gcfinalworkhuihaoda.startpage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

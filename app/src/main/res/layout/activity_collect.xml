@@ -197,6 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="删除"
+            android:textColor="#111111"
             app:layout_constraintBottom_toBottomOf="parent" />
     </LinearLayout>
 
