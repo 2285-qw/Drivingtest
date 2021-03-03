@@ -46,6 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lin1">
 
         <TextView
+            android:id="@+id/choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -63,8 +64,9 @@
             android:layout_weight="1"
             android:paddingBottom="10dp"
             android:text="题目名称"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textColor="#333333"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
@@ -90,7 +92,6 @@
                 android:id="@+id/questionimg"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
-
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp" />
 
@@ -107,7 +108,9 @@
                     android:drawableLeft="@mipmap/aa1"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="1111111"/>
+                    android:textSize="15sp"
+                    android:textColor="#333333"
+                    />
 
                 <TextView
                     android:layout_marginTop="@dimen/top"
@@ -117,7 +120,9 @@
                     android:drawableLeft="@mipmap/b"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="1111111"/>
+                    android:textSize="15sp"
+                    android:textColor="#333333"
+                   />
 
                 <TextView
                     android:layout_marginTop="@dimen/top"
@@ -127,7 +132,9 @@
                     android:drawableLeft="@mipmap/c"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="1111111"/>
+                    android:textSize="15sp"
+                    android:textColor="#333333"
+                    />
 
                 <TextView
                     android:layout_marginTop="@dimen/top"
@@ -137,7 +144,9 @@
                     android:drawableLeft="@mipmap/d"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="1111111"/>
+                    android:textSize="15sp"
+                    android:textColor="#333333"
+                    />
 
             </LinearLayout>
 

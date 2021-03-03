@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bzu.gc.gcfinalworkhuihaoda.Util.JsonReadUtil;
+import bzu.gc.gcfinalworkhuihaoda.Util.UtilTools;
 import bzu.gc.gcfinalworkhuihaoda.Util.utils;
 import bzu.gc.gcfinalworkhuihaoda.db.DBManger;
 import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
@@ -101,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView collect;
     //底部收藏文字
     TextView t_collect;
+    //单选判断
+    TextView choice;
+    //我
+    TextView i;
+    //答题
+    TextView da;
+    //首页
+    TextView shou;
 
 
     @Override
@@ -133,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
         pageview.add(viewmine);
         //初始化
         init();
+
+        //设置字体
+        UtilTools.setFont(MainActivity.this,i,"fonts/DIN-Medium.otf");
+        UtilTools.setFont(MainActivity.this,da,"fonts/DIN-Medium.otf");
+        UtilTools.setFont(MainActivity.this,shou,"fonts/DIN-Medium.otf");
 
         getresource();
         PagerAdapter mpagerAdapter = new PagerAdapter() {
@@ -268,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
         home_allnum = viewhome.findViewById(R.id.home_allnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
         home_errornum1 = viewhome.findViewById(R.id.home_errornum1);
+        shou=viewhome.findViewById(R.id.shou);
+
 
 
         tittle = viewshua.findViewById(R.id.tittle);
@@ -282,7 +298,10 @@ public class MainActivity extends AppCompatActivity {
         t_false = viewshua.findViewById(R.id.t_false);
         collect=viewshua.findViewById(R.id.collect);
         t_collect=viewshua.findViewById(R.id.t_collect);
+        choice=viewshua.findViewById(R.id.choice);
+        da=viewshua.findViewById(R.id.da);
 
+        i=viewmine.findViewById(R.id.i);
 
         t_item1.setOnClickListener(new MainActivity.MyOnclick());
         t_item2.setOnClickListener(new MainActivity.MyOnclick());
@@ -419,10 +438,11 @@ public class MainActivity extends AppCompatActivity {
             //判断是单选还是判断
             switch (question.getItem3()) {
                 case "":
+                    choice.setText("判断");
                     t_item3.setVisibility(View.GONE);
                     t_item4.setVisibility(View.GONE);
                     break;
-                default:
+                default: choice.setText("单选");
                     t_item3.setVisibility(View.VISIBLE);
                     t_item4.setVisibility(View.VISIBLE);
                     break;

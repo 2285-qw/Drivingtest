@@ -57,6 +57,8 @@ public class wrongbook extends AppCompatActivity {
     private ImageView collect;
     //收藏文字
     private TextView t_collect;
+    //单选判断
+    TextView choice;
 
 
     @Override
@@ -75,6 +77,7 @@ public class wrongbook extends AppCompatActivity {
         //初始化数据
         initdata();
 
+
         Intent intent = getIntent();
         num = intent.getIntExtra("position", num);
         Log.d("num",num+"________");
@@ -90,6 +93,7 @@ public class wrongbook extends AppCompatActivity {
         t_item2 = findViewById(R.id.t_item2);
         t_item3 = findViewById(R.id.t_item3);
         t_item4 = findViewById(R.id.t_item4);
+        choice=findViewById(R.id.choice);
 
         analytic = findViewById(R.id.analytic);
 
@@ -119,10 +123,12 @@ public class wrongbook extends AppCompatActivity {
             //判断是单选还是判断
             switch (question.getItem3()) {
                 case "":
+                    choice.setText("判断");
                     t_item3.setVisibility(View.GONE);
                     t_item4.setVisibility(View.GONE);
                     break;
                 default:
+                    choice.setText("单选");
                     t_item3.setVisibility(View.VISIBLE);
                     t_item4.setVisibility(View.VISIBLE);
                     break;

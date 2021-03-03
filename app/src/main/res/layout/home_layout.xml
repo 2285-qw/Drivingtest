@@ -11,6 +11,7 @@
         android:background="@color/maincolor">
 
         <TextView
+            android:id="@+id/shou"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
@@ -24,9 +25,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="20dp"
         android:background="@mipmap/back1"
         android:gravity="center"
         android:orientation="horizontal"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="你当前的刷题总量："
+            android:text="你当前的刷题总量"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -54,9 +55,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="20dp"
         android:background="@mipmap/back2"
         android:gravity="center"
         android:onClick="tomywronglist"
@@ -71,7 +72,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
 
-            android:text="错题本："
+            android:text="错题本"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -93,9 +94,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="20dp"
         android:background="@mipmap/back3"
         android:gravity="center"
         android:onClick="skipCollect"
@@ -109,7 +110,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="我的收藏："
+            android:text="我的收藏"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

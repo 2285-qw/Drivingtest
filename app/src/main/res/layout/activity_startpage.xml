@@ -3,8 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
     tools:context=".startpage"
-    android:background="@mipmap/qidongye">
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/qidongye"
+        android:scaleType="centerCrop">
+    </ImageView>
 </android.support.constraint.ConstraintLayout>

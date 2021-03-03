@@ -93,7 +93,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
 
-                android:text="答题"
+                android:text="我的"
                 />
         </LinearLayout>
 

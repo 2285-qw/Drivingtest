@@ -45,6 +45,8 @@ public class collectActivity extends AppCompatActivity {
     private TextView t_item4;
     //解析
     private TextView analytic;
+    //单选、判断
+    TextView choice;
 
     private TextView tittle;
     private TextView explain;
@@ -85,6 +87,7 @@ public class collectActivity extends AppCompatActivity {
         t_item2 = findViewById(R.id.t_item2);
         t_item3 = findViewById(R.id.t_item3);
         t_item4 = findViewById(R.id.t_item4);
+        choice=findViewById(R.id.choice);
 
         analytic = findViewById(R.id.analytic);
 
@@ -110,10 +113,12 @@ public class collectActivity extends AppCompatActivity {
             //判断是单选还是判断
             switch (question.getItem3()) {
                 case "":
+                    choice.setText("判断");
                     t_item3.setVisibility(View.GONE);
                     t_item4.setVisibility(View.GONE);
                     break;
                 default:
+                    choice.setText("单选");
                     t_item3.setVisibility(View.VISIBLE);
                     t_item4.setVisibility(View.VISIBLE);
                     break;

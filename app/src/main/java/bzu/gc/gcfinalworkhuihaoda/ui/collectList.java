@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import bzu.gc.gcfinalworkhuihaoda.R;
+import bzu.gc.gcfinalworkhuihaoda.Util.UtilTools;
 import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
 import bzu.gc.gcfinalworkhuihaoda.entity.Question;
 
@@ -37,6 +38,9 @@ public class collectList extends AppCompatActivity {
     Question question;
     //图片
     ImageView imageView;
+    //收藏
+    TextView t1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +57,8 @@ public class collectList extends AppCompatActivity {
         qdbManger = new QDBManger(this);
         //初始化集合数据
         list = qdbManger.getCollect();
+        t1=findViewById(R.id.t1);
+        UtilTools.setFont(collectList.this,t1,"fonts/DIN-Medium.otf");
 
 
     }

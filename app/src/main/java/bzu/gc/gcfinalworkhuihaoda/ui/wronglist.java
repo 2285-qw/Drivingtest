@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import bzu.gc.gcfinalworkhuihaoda.R;
+import bzu.gc.gcfinalworkhuihaoda.Util.UtilTools;
 import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
 import bzu.gc.gcfinalworkhuihaoda.entity.Question;
 
@@ -36,10 +37,12 @@ public class wronglist extends AppCompatActivity { //错题本集合
     Question question;
     //图片
     ImageView imageView;
+    //错题本
+    TextView t1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collectlist);
+        setContentView(R.layout.activity_wronglist);
 
         //去除标题栏
         if (getSupportActionBar() != null) {
@@ -53,6 +56,8 @@ public class wronglist extends AppCompatActivity { //错题本集合
         //初始化集合数据
         list = qdbManger.finderror("111");
 
+        t1=findViewById(R.id.t1);
+        UtilTools.setFont(wronglist.this,t1,"fonts/DIN-Medium.otf");
 
     }
 
