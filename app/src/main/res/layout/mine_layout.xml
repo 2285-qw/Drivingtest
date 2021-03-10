@@ -114,6 +114,16 @@
                 android:textSize="17sp" />
         </LinearLayout>
 
-
+        <FrameLayout
+            android:id="@+id/banner_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="60dp"
+            android:background="#D5D5D5"
+            />
     </LinearLayout>
 </LinearLayout>

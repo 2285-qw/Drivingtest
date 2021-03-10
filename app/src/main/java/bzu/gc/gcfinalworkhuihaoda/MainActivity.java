@@ -11,19 +11,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.loopj.android.image.SmartImageView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import bzu.gc.gcfinalworkhuihaoda.Util.BannerUtil;
 import bzu.gc.gcfinalworkhuihaoda.Util.JsonReadUtil;
+import bzu.gc.gcfinalworkhuihaoda.Util.StaticClass;
 import bzu.gc.gcfinalworkhuihaoda.Util.UtilTools;
 import bzu.gc.gcfinalworkhuihaoda.Util.utils;
+import bzu.gc.gcfinalworkhuihaoda.config.TTAdManagerHolder;
 import bzu.gc.gcfinalworkhuihaoda.db.DBManger;
 import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
 import bzu.gc.gcfinalworkhuihaoda.entity.Question;
@@ -32,6 +37,8 @@ import bzu.gc.gcfinalworkhuihaoda.tools.shuaJsonParse;
 import bzu.gc.gcfinalworkhuihaoda.ui.PrivacyActivity;
 import bzu.gc.gcfinalworkhuihaoda.ui.collectList;
 import bzu.gc.gcfinalworkhuihaoda.ui.wronglist;
+
+import static bzu.gc.gcfinalworkhuihaoda.Util.AppSigning.getSha1;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -110,12 +117,22 @@ public class MainActivity extends AppCompatActivity {
     TextView da;
     //首页
     TextView shou;
+    //Banner广告布局
+    private FrameLayout mBannerContainer1;
+    //Banner广告布局
+    private FrameLayout mBannerContainer2;
+    //Banner广告布局
+    private FrameLayout mBannerContainer3;
+    //
+    TTAdNative mTTAdNative;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("sha1",getSha1(this));
 
         //去除标题栏
         if (getSupportActionBar() != null) {
@@ -219,6 +236,9 @@ public class MainActivity extends AppCompatActivity {
                         homeout.setTextColor(Color.parseColor("#999999"));
                         shuaout.setTextColor(Color.parseColor("#55CAC2"));
                         mineout.setTextColor(Color.parseColor("#999999"));
+
+                        mTTAdNative = TTAdManagerHolder.get().createAdNative(MainActivity.this);
+                        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer2);
                         break;
                     case 2:
                         homei.setImageResource(R.mipmap.home);
@@ -227,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
                         homeout.setTextColor(Color.parseColor("#999999"));
                         shuaout.setTextColor(Color.parseColor("#999999"));
                         mineout.setTextColor(Color.parseColor("#55CAC2"));
+
+                        mTTAdNative = TTAdManagerHolder.get().createAdNative(MainActivity.this);
+                        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer3);
                         break;
 
                 }
@@ -245,6 +268,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //step2:创建TTAdNative对象
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
+        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, this,mBannerContainer1);
+
+
+
 
         MobclickAgent.onResume(this);
         //设置错题数
@@ -279,10 +309,12 @@ public class MainActivity extends AppCompatActivity {
         myi = findViewById(R.id.myi);
 
 
+
         home_allnum = viewhome.findViewById(R.id.home_allnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
         home_errornum1 = viewhome.findViewById(R.id.home_errornum1);
         shou=viewhome.findViewById(R.id.shou);
+        mBannerContainer1=viewhome.findViewById(R.id.banner_container);
 
 
 
@@ -300,8 +332,10 @@ public class MainActivity extends AppCompatActivity {
         t_collect=viewshua.findViewById(R.id.t_collect);
         choice=viewshua.findViewById(R.id.choice);
         da=viewshua.findViewById(R.id.da);
+        mBannerContainer2=viewshua.findViewById(R.id.banner_container);
 
         i=viewmine.findViewById(R.id.i);
+        mBannerContainer3=viewmine.findViewById(R.id.banner_container);
 
         t_item1.setOnClickListener(new MainActivity.MyOnclick());
         t_item2.setOnClickListener(new MainActivity.MyOnclick());
@@ -397,6 +431,8 @@ public class MainActivity extends AppCompatActivity {
         //收藏
         collect.setImageResource(R.mipmap.icon1);
         t_collect.setTextColor(Color.parseColor("#111111"));
+
+        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer2);
     }
 
     //跳转至我的错题本

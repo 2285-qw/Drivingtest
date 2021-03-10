@@ -7,15 +7,20 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.loopj.android.image.SmartImageView;
 
 import java.util.List;
 
 import bzu.gc.gcfinalworkhuihaoda.R;
+import bzu.gc.gcfinalworkhuihaoda.Util.BannerUtil;
+import bzu.gc.gcfinalworkhuihaoda.Util.StaticClass;
 import bzu.gc.gcfinalworkhuihaoda.Util.utils;
+import bzu.gc.gcfinalworkhuihaoda.config.TTAdManagerHolder;
 import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
 import bzu.gc.gcfinalworkhuihaoda.entity.Question;
 
@@ -59,6 +64,10 @@ public class wrongbook extends AppCompatActivity {
     private TextView t_collect;
     //单选判断
     TextView choice;
+    //Banner广告布局
+    private FrameLayout mBannerContainer;
+    //
+    TTAdNative mTTAdNative;
 
 
     @Override
@@ -84,6 +93,16 @@ public class wrongbook extends AppCompatActivity {
         if (list != null) {
             setdata(num);
         }
+
+        mBannerContainer=findViewById(R.id.banner_container);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //step2:创建TTAdNative对象
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
+        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, this,mBannerContainer);
     }
 
     private void initdata() {
@@ -183,6 +202,10 @@ public class wrongbook extends AppCompatActivity {
 
     //下一题点击事件
     public void newtquestion(View view) {
+
+        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, this,mBannerContainer);
+
+
         int i = qdbManger.getWrongnum("111");
         num++;
         if (num >= i) {

@@ -21,6 +21,7 @@ import java.util.TimerTask;
 import bzu.gc.gcfinalworkhuihaoda.Util.StaticClass;
 import bzu.gc.gcfinalworkhuihaoda.Util.shareUtils;
 import bzu.gc.gcfinalworkhuihaoda.ui.PrivacyActivity;
+import bzu.gc.gcfinalworkhuihaoda.ui.SplashActivityAD;
 
 public class startpage extends AppCompatActivity {
     private static final long dalay = 3000;
@@ -43,7 +44,7 @@ public class startpage extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    Intent intent = new Intent(startpage.this, MainActivity.class);
+                    Intent intent = new Intent(startpage.this, SplashActivityAD.class);
                     startActivity(intent);
                     startpage.this.finish();
                 }
