@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "bzu.gc.gcfinalwork"
+        applicationId "bzu.gc.gcfinalworkhuihaoda"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
