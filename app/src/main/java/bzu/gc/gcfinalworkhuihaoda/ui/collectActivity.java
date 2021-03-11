@@ -94,7 +94,7 @@ public class collectActivity extends AppCompatActivity {
         super.onResume();
         //step2:创建TTAdNative对象
         mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
-        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, this,mBannerContainer);
+        BannerUtil.loadBannerAd(StaticClass.BANNERID4,mTTAdNative, this,mBannerContainer);
     }
 
     private void initdata() {

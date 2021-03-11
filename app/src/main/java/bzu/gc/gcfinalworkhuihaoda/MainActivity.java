@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                         mineout.setTextColor(Color.parseColor("#55CAC2"));
 
                         mTTAdNative = TTAdManagerHolder.get().createAdNative(MainActivity.this);
-                        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer3);
+                        BannerUtil.loadBannerAd(StaticClass.BANNERID3,mTTAdNative, MainActivity.this,mBannerContainer3);
                         break;
 
                 }
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
         //step2:创建TTAdNative对象
         mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
-        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, this,mBannerContainer1);
+        BannerUtil.loadBannerAd(StaticClass.BANNERID1,mTTAdNative, this,mBannerContainer1);
 
 
 
