@@ -13,7 +13,7 @@ public final class TToast {
     private static Toast sToast;
 
     public static void show(Context context, String msg) {
-        show(context, msg, Toast.LENGTH_SHORT);
+        //show(context, msg, Toast.LENGTH_SHORT);
     }
 
     public static void show(Context context, String msg, int duration) {
