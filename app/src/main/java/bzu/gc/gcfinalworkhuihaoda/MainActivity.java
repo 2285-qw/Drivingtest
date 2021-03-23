@@ -273,9 +273,6 @@ public class MainActivity extends AppCompatActivity {
         mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
         BannerUtil.loadBannerAd(StaticClass.BANNERID1,mTTAdNative, this,mBannerContainer1);
 
-
-
-
         MobclickAgent.onResume(this);
         //设置错题数
         home_errornum.setText(qdbManger.getWrongnum("111") + "");

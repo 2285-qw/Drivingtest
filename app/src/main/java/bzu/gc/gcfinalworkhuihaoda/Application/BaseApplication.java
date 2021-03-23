@@ -20,7 +20,7 @@ public class BaseApplication extends Application {
         //调试 log
         UMConfigure.setLogEnabled(true);
         //初始化sdk
-        UMConfigure.init(this,"603c8b50b8c8d45c1384081a", "yunhaojiakao", UMConfigure.DEVICE_TYPE_PHONE,null);
+        UMConfigure.init(this,"603c8b50b8c8d45c1384081a", "HUAWEI", UMConfigure.DEVICE_TYPE_PHONE,null);
         //页面采集模式
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 

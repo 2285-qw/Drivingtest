@@ -100,6 +100,7 @@ public class startpage extends AppCompatActivity {
                 //TODO 进入主界面
                 shareUtils.putBoolean(startpage.this,StaticClass.SPLASH_IS_FIRST,false);
                 startActivity(new Intent(startpage.this,MainActivity.class));
+                finish();
             }
         });
 
