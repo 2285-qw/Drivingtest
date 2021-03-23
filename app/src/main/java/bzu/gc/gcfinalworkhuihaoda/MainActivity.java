@@ -35,6 +35,7 @@ import bzu.gc.gcfinalworkhuihaoda.entity.Question;
 import bzu.gc.gcfinalworkhuihaoda.entity.ShopInfo;
 import bzu.gc.gcfinalworkhuihaoda.tools.shuaJsonParse;
 import bzu.gc.gcfinalworkhuihaoda.ui.PrivacyActivity;
+import bzu.gc.gcfinalworkhuihaoda.ui.WebViewActivity;
 import bzu.gc.gcfinalworkhuihaoda.ui.collectList;
 import bzu.gc.gcfinalworkhuihaoda.ui.wronglist;
 
@@ -457,6 +458,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //跳转至隐私政策页面
+    public void user(View view) {
+        WebViewActivity.openActivity(getApplicationContext(),"");
+    }
 
     //设置题目加载显示
     private void setdata(int qth) {
