@@ -34,7 +34,6 @@ import bzu.gc.gcfinalworkhuihaoda.db.QDBManger;
 import bzu.gc.gcfinalworkhuihaoda.entity.Question;
 import bzu.gc.gcfinalworkhuihaoda.entity.ShopInfo;
 import bzu.gc.gcfinalworkhuihaoda.tools.shuaJsonParse;
-import bzu.gc.gcfinalworkhuihaoda.ui.PrivacyActivity;
 import bzu.gc.gcfinalworkhuihaoda.ui.WebViewActivity;
 import bzu.gc.gcfinalworkhuihaoda.ui.collectList;
 import bzu.gc.gcfinalworkhuihaoda.ui.wronglist;
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("sha1",getSha1(this));
+        Log.d("sha1", getSha1(this));
 
         //去除标题栏
         if (getSupportActionBar() != null) {
@@ -143,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
         //创建轻量级储存
         SharedPreferences sp = MainActivity.this.getSharedPreferences("shu", Context.MODE_PRIVATE);
         //读取
-        num=sp.getInt("num",0);
-        Log.d("num",num+"");
+        num = sp.getInt("num", 0);
+        Log.d("num", num + "");
 
 
         //查找布局文件
@@ -162,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
         init();
 
         //设置字体
-        UtilTools.setFont(MainActivity.this,i,"fonts/DIN-Medium.otf");
-        UtilTools.setFont(MainActivity.this,da,"fonts/DIN-Medium.otf");
-        UtilTools.setFont(MainActivity.this,shou,"fonts/DIN-Medium.otf");
+        UtilTools.setFont(MainActivity.this, i, "fonts/DIN-Medium.otf");
+        UtilTools.setFont(MainActivity.this, da, "fonts/DIN-Medium.otf");
+        UtilTools.setFont(MainActivity.this, shou, "fonts/DIN-Medium.otf");
 
         getresource();
         PagerAdapter mpagerAdapter = new PagerAdapter() {
@@ -239,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                         mineout.setTextColor(Color.parseColor("#999999"));
 
                         mTTAdNative = TTAdManagerHolder.get().createAdNative(MainActivity.this);
-                        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer2);
+                        BannerUtil.loadBannerAd(StaticClass.BANNERID2, mTTAdNative, MainActivity.this, mBannerContainer2);
                         break;
                     case 2:
                         homei.setImageResource(R.mipmap.home);
@@ -250,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                         mineout.setTextColor(Color.parseColor("#55CAC2"));
 
                         mTTAdNative = TTAdManagerHolder.get().createAdNative(MainActivity.this);
-                        BannerUtil.loadBannerAd(StaticClass.BANNERID3,mTTAdNative, MainActivity.this,mBannerContainer3);
+                        BannerUtil.loadBannerAd(StaticClass.BANNERID3, mTTAdNative, MainActivity.this, mBannerContainer3);
                         break;
 
                 }
@@ -272,7 +271,8 @@ public class MainActivity extends AppCompatActivity {
 
         //step2:创建TTAdNative对象
         mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
-        BannerUtil.loadBannerAd(StaticClass.BANNERID1,mTTAdNative, this,mBannerContainer1);
+        BannerUtil.loadBannerAd(StaticClass.BANNERID1, mTTAdNative, this, mBannerContainer1);
+
 
         MobclickAgent.onResume(this);
         //设置错题数
@@ -307,13 +307,11 @@ public class MainActivity extends AppCompatActivity {
         myi = findViewById(R.id.myi);
 
 
-
         home_allnum = viewhome.findViewById(R.id.home_allnum);
         home_errornum = viewhome.findViewById(R.id.home_errornum);
         home_errornum1 = viewhome.findViewById(R.id.home_errornum1);
-        shou=viewhome.findViewById(R.id.shou);
-        mBannerContainer1=viewhome.findViewById(R.id.banner_container);
-
+        shou = viewhome.findViewById(R.id.shou);
+        mBannerContainer1 = viewhome.findViewById(R.id.banner_container);
 
 
         tittle = viewshua.findViewById(R.id.tittle);
@@ -326,14 +324,14 @@ public class MainActivity extends AppCompatActivity {
         analytic = viewshua.findViewById(R.id.analytic);
         t_true = viewshua.findViewById(R.id.t_true);
         t_false = viewshua.findViewById(R.id.t_false);
-        collect=viewshua.findViewById(R.id.collect);
-        t_collect=viewshua.findViewById(R.id.t_collect);
-        choice=viewshua.findViewById(R.id.choice);
-        da=viewshua.findViewById(R.id.da);
-        mBannerContainer2=viewshua.findViewById(R.id.banner_container);
+        collect = viewshua.findViewById(R.id.collect);
+        t_collect = viewshua.findViewById(R.id.t_collect);
+        choice = viewshua.findViewById(R.id.choice);
+        da = viewshua.findViewById(R.id.da);
+        mBannerContainer2 = viewshua.findViewById(R.id.banner_container);
 
-        i=viewmine.findViewById(R.id.i);
-        mBannerContainer3=viewmine.findViewById(R.id.banner_container);
+        i = viewmine.findViewById(R.id.i);
+        mBannerContainer3 = viewmine.findViewById(R.id.banner_container);
 
         t_item1.setOnClickListener(new MainActivity.MyOnclick());
         t_item2.setOnClickListener(new MainActivity.MyOnclick());
@@ -430,7 +428,8 @@ public class MainActivity extends AppCompatActivity {
         collect.setImageResource(R.mipmap.icon1);
         t_collect.setTextColor(Color.parseColor("#111111"));
 
-        BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer2);
+        //点击下一题不在刷新广告
+        //BannerUtil.loadBannerAd(StaticClass.BANNERID2,mTTAdNative, MainActivity.this,mBannerContainer2);
     }
 
     //跳转至我的错题本
@@ -454,13 +453,12 @@ public class MainActivity extends AppCompatActivity {
 
     //跳转至隐私政策页面
     public void jump(View view) {
-        Intent intent = new Intent(MainActivity.this, PrivacyActivity.class);
-        startActivity(intent);
+        WebViewActivity.openActivity(getApplicationContext(), "http://huihaoda.cn/yinsi/jzys.html");
     }
 
     //跳转至隐私政策页面
     public void user(View view) {
-        WebViewActivity.openActivity(getApplicationContext(),"");
+        WebViewActivity.openActivity(getApplicationContext(), "http://huihaoda.cn/yhxy/jzyhxy.html");
     }
 
     //设置题目加载显示
@@ -480,7 +478,8 @@ public class MainActivity extends AppCompatActivity {
                     t_item3.setVisibility(View.GONE);
                     t_item4.setVisibility(View.GONE);
                     break;
-                default: choice.setText("单选");
+                default:
+                    choice.setText("单选");
                     t_item3.setVisibility(View.VISIBLE);
                     t_item4.setVisibility(View.VISIBLE);
                     break;
@@ -633,13 +632,12 @@ public class MainActivity extends AppCompatActivity {
             //添加刷题数
             qdbManger.add(question, "");
         }
-        Log.d("id",question.getId()+"");
+        Log.d("id", question.getId() + "");
         qdbManger.addCollect(question.getId());
 
 
         collect.setImageResource(R.mipmap.icon);
         t_collect.setTextColor(Color.parseColor("#FEB354"));
-
 
 
     }
@@ -653,9 +651,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor spe = sp.edit();
         //储存答题id
         spe.putInt("num", num).commit();
-        int i=sp.getInt("num",0);
-        Log.d("num",num+"");
-        Log.d("num",i+"");
+        int i = sp.getInt("num", 0);
+        Log.d("num", num + "");
+        Log.d("num", i + "");
     }
 
     @Override

@@ -32,8 +32,8 @@ public class BannerUtil {
     static FrameLayout mBannerContainer;
 
     public static void loadBannerAd(String codeId, TTAdNative mTTAdNative, Activity activity1, FrameLayout mBannerContainer1) {
-        mBannerContainer=mBannerContainer1;
-        mContext=activity1.getApplicationContext();
+        mBannerContainer = mBannerContainer1;
+        mContext = activity1.getApplicationContext();
         activity = activity1;
         //step4:创建广告请求参数AdSlot,注意其中的setNativeAdtype方法，具体参数含义参考文档
         final AdSlot adSlot = new AdSlot.Builder()
@@ -41,7 +41,7 @@ public class BannerUtil {
                 .setImageAcceptedSize(640, 100)
                 //[start支持模板样式]:需要支持模板广告和原生广告样式的切换，需要调用supportRenderControl和setExpressViewAcceptedSize
                 .supportRenderControl() //支持模板样式
-                .setExpressViewAcceptedSize(640,100)//设置模板宽高（dp）
+                .setExpressViewAcceptedSize(640, 100)//设置模板宽高（dp）
                 //[end支持模板样式]
                 .setNativeAdType(AdSlot.TYPE_BANNER) //请求原生广告时候，请务必调用该方法，设置参数为TYPE_BANNER或TYPE_INTERACTION_AD
                 .setAdCount(1)
@@ -51,7 +51,7 @@ public class BannerUtil {
         mTTAdNative.loadNativeAd(adSlot, new TTAdNative.NativeAdListener() {
             @Override
             public void onError(int code, String message) {
-               TToast.show(activity, "load error : " + code + ", " + message);
+                TToast.show(activity, "load error : " + code + ", " + message);
             }
 
             @Override
@@ -72,13 +72,14 @@ public class BannerUtil {
                 ad.setExpressRenderListener(new TTNativeAd.ExpressRenderListener() {
                     @Override
                     public void onRenderSuccess(View view, float width, float height, boolean isExpress) {
-                        showAd(ad,activity,mBannerContainer);
+                        showAd(ad, activity, mBannerContainer);
                     }
                 });
                 ad.render();
             }
         });
     }
+
     //广告展示和数据绑定
     private static void showAd(TTNativeAd ad, Activity activity, FrameLayout mBannerContainer) {
         View bannerView = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.native_ad, mBannerContainer, false);
@@ -136,7 +137,7 @@ public class BannerUtil {
                 break;
             default:
                 mCreativeButton.setVisibility(View.GONE);
-               TToast.show(mContext, "交互类型异常");
+                TToast.show(mContext, "交互类型异常");
         }
 
         //可以被点击的view, 也可以把nativeView放进来意味整个广告区域可被点击
@@ -154,11 +155,11 @@ public class BannerUtil {
         creativeViewList.add(mCreativeButton);
 
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
-        nativeAd.registerViewForInteraction((ViewGroup) nativeView, imageViewList,clickViewList, creativeViewList, imgDislike, new TTNativeAd.AdInteractionListener() {
+        nativeAd.registerViewForInteraction((ViewGroup) nativeView, imageViewList, clickViewList, creativeViewList, imgDislike, new TTNativeAd.AdInteractionListener() {
             @Override
             public void onAdClicked(View view, TTNativeAd ad) {
                 if (ad != null) {
-                   TToast.show(mContext, "广告" + ad.getTitle() + "被点击");
+                    TToast.show(mContext, "广告" + ad.getTitle() + "被点击");
                 }
             }
 
